@@ -1,0 +1,21 @@
+<template name='main'>
+  <div class="main-wrapper">
+  {{#each contents}}
+    {{> content}}
+  {{/each}}
+  </div>
+</template>
+
+<template name='content'>
+<a class="box" href="{{pathForDetail}}">
+{{#if isImage contents.mimeType}}
+<img src="{{contents.url}}" alt="{{contents.key}}">
+{{else}}
+<img src="no-prev.png" alt="{{contents.key}}">
+{{/if}}
+  <p>文件名: {{contents.key}}</p>
+  <!-- <p>文件大小: {{size contents.fsize}}</p> -->
+  <!-- <p>文件类型: {{contents.mimeType}}</p> -->
+  <!-- <p>上传日期: {{date contents.putTime}}</p> -->
+  </a>
+</template>

@@ -1,0 +1,12 @@
+{
+  "name": "qiniu-resource-manage",
+  "private": true,
+  "scripts": {
+    "start": "meteor run"
+  },
+  "dependencies": {
+    "meteor-node-stubs": "~0.2.0",
+    "moment": "^2.15.0",
+    "qiniu": "^6.1.11"
+  }
+}

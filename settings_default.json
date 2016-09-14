@@ -1,0 +1,9 @@
+{
+  "public": {
+    "ACCESS_KEY": "xxxxxxxxxxxxxxxxxxxxxxxxx",
+    "SECRET_KEY": "xxxxxxxxxxxxxxxxxxxxxxxx",
+    "BUCKET": "xxxxxxxxxxx",
+    "PIC_STYLE": "imageView2/2/w/200/h/200/format/png/interlace/0/q/100",
+    "HOST_NAME": "xxxxxxxxxxxxxxxx"
+  }
+}

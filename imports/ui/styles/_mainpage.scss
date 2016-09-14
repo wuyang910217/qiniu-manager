@@ -1,0 +1,29 @@
+.main-wrapper {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  .box {
+    flex: 0 1 calc(18%);
+    background: rgba(0,0,0,0.2);
+    border: 2px solid #ffa;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin: 10px;
+    text-decoration: none;
+    &:hover {
+      background: rgba(0,0,0,0.6);
+      border: 2px solid #fff;
+    }
+    img {
+      width: 200px;
+      height: 200px;
+      align-self: center;
+      margin: 10px;
+    }
+    p {
+      margin: 2px;
+    }
+  }
+}
