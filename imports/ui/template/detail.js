@@ -9,16 +9,13 @@ import './detail.html';
 
 Template.detail.onCreated(function(){
   let self = this;
-  self.autorun(function(){
-    let queryId = FlowRouter.getParam('queryId');
-    self.subscribe('detail',queryId);
-  });
+  // self.autorun(function(){
+  let queryId = FlowRouter.getParam('queryId');
+  self.subscribe('detail',queryId);
+  // });
 });
 
 Template.detail.helpers({
-  // isReady(){
-  //   return !FlowRouter.subsReady('detail');
-  // },
   detail() {
     // 每次运行detail helper 都会执行一次
     console.log(Resources.findOne());

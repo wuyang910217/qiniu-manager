@@ -16,8 +16,12 @@ import './main.html';
 // });
 
 Template.main.helpers({
-  isReady(){
-    return !FlowRouter.subsReady('contents');
+  isReady(sub){
+    if (sub) {
+      return FlowRouter.subsReady(sub);
+    } else{
+      return FlowRouter.subsReady();
+    }
   },
   contents() {
     console.log(Resources.find().fetch());

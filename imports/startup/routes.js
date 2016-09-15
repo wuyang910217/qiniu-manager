@@ -17,7 +17,7 @@ FlowRouter.route('/main',{
     BlazeLayout.render('mainLayout', {main: 'main'});
   },
   subscriptions: function(params){
-    this.register('main',Meteor.subscribe('contents'));
+    this.register('mainpage',Meteor.subscribe('contents'));
   },
 });
 

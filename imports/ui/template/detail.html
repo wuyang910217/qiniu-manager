@@ -1,23 +1,24 @@
 <template name='detail'>
     <div class="detail-container">
-    <!-- {{#if isReady}} -->
-        {{#if isImage detail.contents.mimeType}}
-          <img src="{{detail.contents.url}}" alt="{{detail.contents.key}}">
+        {{#if Template.subscriptionsReady }}
+            {{#if isImage detail.contents.mimeType}}
+                <img src="{{detail.contents.url}}" alt="{{detail.contents.key}}">
+            {{else}}
+                <img src="images/no-prev.png" alt="no-prev.png">
+            {{/if}}
+                <p>文件名： {{detail.contents.key}}</p>
+                <p>文件大小： {{size detail.contents.fsize}}</p>
+                <p>文件类型： {{detail.contents.mimeType}}</p>
+                <p>文件hash值： {{detail.contents.hash}}</p>
+                <p>文件上传日期： {{date detail.contents.putTime}}</p>
+                <button class="btn-detail back">返回</button>
+                <button class="btn-detail download">下载</button>
+                <button class="btn-detail remove">删除</button>
+                <button class="btn-d move">重命名</button>
+                <button class="btn-d copy">复制</button>
         {{else}}
-          <img src="images/no-prev.png" alt="no-prev.png">
+            {{> loading }}
+            <h1>Loading....</h1>
         {{/if}}
-        <p>文件名： {{detail.contents.key}}</p>
-        <p>文件大小： {{size detail.contents.fsize}}</p>
-        <p>文件类型： {{detail.contents.mimeType}}</p>
-        <p>文件hash值： {{detail.contents.hash}}</p>
-        <p>文件上传日期： {{date detail.contents.putTime}}</p>
-        <button class="btn-detail back">返回</button>
-        <button class="btn-detail download">下载</button>
-        <button class="btn-detail remove">删除</button>
-        <button class="btn-d move">重命名</button>
-        <button class="btn-d copy">复制</button>
-        <!-- {{else}} -->
-        <!-- <h1>dddd</h1> -->
-        <!-- {{/if}} -->
     </div>
 </template>

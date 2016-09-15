@@ -1,23 +1,24 @@
 <template name='main'>
-  <div class="main-wrapper">
-  {{#if isReady }}
-  {{#each contents}}
-    {{> content}}
-  {{/each}}
-  {{else}}
-  <h1>dddd</h1>
-  {{/if}}
-  </div>
+    <div class="main-wrapper">
+        {{#if isReady }}
+          {{#each contents}}
+            {{> content}}
+          {{/each}}
+        {{else}}
+          {{> loading}}
+          <h1>Loading....</h1>
+        {{/if}}
+    </div>
 </template>
 
 <template name='content'>
-<a class="box" href="{{pathForDetail}}">
-{{#if isImage contents.mimeType}}
-<img src="{{contents.url}}" alt="{{contents.key}}">
-{{else}}
-<img src="images/no-prev.png" alt="{{contents.key}}">
-{{/if}}
-  <p>文件名: {{contents.key}}</p>
+  <a class="box" href="{{pathForDetail}}">
+    {{#if isImage contents.mimeType}}
+      <img src="{{contents.url}}" alt="{{contents.key}}">
+    {{else}}
+      <img src="images/no-prev.png" alt="{{contents.key}}">
+    {{/if}}
+    <p>文件名: {{contents.key}}</p>
   <!-- <p>文件大小: {{size contents.fsize}}</p> -->
   <!-- <p>文件类型: {{contents.mimeType}}</p> -->
   <!-- <p>上传日期: {{date contents.putTime}}</p> -->
