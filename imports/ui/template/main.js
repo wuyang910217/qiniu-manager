@@ -7,11 +7,18 @@ import moment from 'moment';
 import { Resources } from '../../api/resources.js';
 import './main.html';
 
-Template.main.onCreated(function(){
-  Meteor.subscribe('contents');
-});
+// Template.main.onCreated(function(){
+//   let self = this;
+//   self.autorun(function(){
+//     self.subscribe('contents');
+//   });
+//   // Meteor.subscribe('contents');
+// });
 
 Template.main.helpers({
+  isReady(){
+    return !FlowRouter.subsReady('contents');
+  },
   contents() {
     console.log(Resources.find().fetch());
     // 嵌套的时间排序
@@ -37,7 +44,7 @@ Template.content.helpers({
   // },
   pathForDetail(){
     let params = {
-      id: this._id
+      queryId: this._id
     };
     return FlowRouter.path('detail',params);
   }

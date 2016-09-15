@@ -8,17 +8,20 @@ import { Resources } from '../../api/resources.js';
 import './detail.html';
 
 Template.detail.onCreated(function(){
-  let queryId = FlowRouter.getParam('id');
-  Meteor.subscribe('detail',queryId);
-});
-
-Template.detail.onRendered(function(){
-  const content = Resources.findOne();
-  console.log(content);
+  let self = this;
+  self.autorun(function(){
+    let queryId = FlowRouter.getParam('queryId');
+    self.subscribe('detail',queryId);
+  });
 });
 
 Template.detail.helpers({
+  // isReady(){
+  //   return !FlowRouter.subsReady('detail');
+  // },
   detail() {
+    // 每次运行detail helper 都会执行一次
+    console.log(Resources.findOne());
     return Resources.findOne();
   },
   size(size) {

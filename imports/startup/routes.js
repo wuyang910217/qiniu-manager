@@ -15,7 +15,10 @@ FlowRouter.route('/main',{
   name: 'main',
   action: function(){
     BlazeLayout.render('mainLayout', {main: 'main'});
-  }
+  },
+  subscriptions: function(params){
+    this.register('main',Meteor.subscribe('contents'));
+  },
 });
 
 FlowRouter.route('/imageloader',{
@@ -25,8 +28,11 @@ FlowRouter.route('/imageloader',{
   }
 });
 
-FlowRouter.route('/detail/:id',{
+FlowRouter.route('/detail/:queryId',{
   name: 'detail',
+  // subscriptions: function(params){
+  //   this.register('detail-content',Meteor.subscribe('detail',params.queryId));
+  // },
   action: function(){
     BlazeLayout.render('homeLayout', {home: 'detail'});
   }

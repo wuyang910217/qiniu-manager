@@ -1,9 +1,10 @@
 <template name='detail'>
     <div class="detail-container">
+    <!-- {{#if isReady}} -->
         {{#if isImage detail.contents.mimeType}}
           <img src="{{detail.contents.url}}" alt="{{detail.contents.key}}">
         {{else}}
-          <img src="no-prev.png" alt="no-prev.png">
+          <img src="images/no-prev.png" alt="no-prev.png">
         {{/if}}
         <p>文件名： {{detail.contents.key}}</p>
         <p>文件大小： {{size detail.contents.fsize}}</p>
@@ -15,5 +16,8 @@
         <button class="btn-detail remove">删除</button>
         <button class="btn-d move">重命名</button>
         <button class="btn-d copy">复制</button>
+        <!-- {{else}} -->
+        <!-- <h1>dddd</h1> -->
+        <!-- {{/if}} -->
     </div>
 </template>

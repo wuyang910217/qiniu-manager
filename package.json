@@ -1,5 +1,5 @@
 {
-  "name": "qiniu-resource-manage",
+  "name": "qiniu-manager",
   "private": true,
   "scripts": {
     "start": "meteor run --settings settings.json"
