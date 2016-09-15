@@ -11,12 +11,19 @@
    border-radius: 10px;
    background-color: rgb(53, 136, 224);
    color: #fff;
-   font-size: 16px;
+   font-size: 18px;
+   letter-spacing: 3px;
    padding:8px 20px;
    border: 2px solid #fff;
    &:hover {
     background-color: rgb(71, 247, 221);
   }
+  }
+  h1 {
+    color: #fff;
+  }
+  a {
+    text-decoration: none;
   }
 }
 

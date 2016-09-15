@@ -24,6 +24,7 @@ Template.main.helpers({
     }
   },
   contents() {
+    console.log('contents helper只执行一次');
     console.log(Resources.find().fetch());
     // 嵌套的时间排序
     return Resources.find({},{sort: {'contents.putTime': -1}});

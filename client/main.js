@@ -6,4 +6,4 @@ import '../imports/ui/template/main.js';
 import '../imports/ui/template/imageloader.js';
 import '../imports/ui/template/detail.js';
 
-import '../imports/ui/loading.html';
+import '../imports/ui/loading.js';

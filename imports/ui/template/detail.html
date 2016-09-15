@@ -1,24 +1,38 @@
 <template name='detail'>
     <div class="detail-container">
         {{#if Template.subscriptionsReady }}
-            {{#if isImage detail.contents.mimeType}}
-                <img src="{{detail.contents.url}}" alt="{{detail.contents.key}}">
+        <div class="p-wrap">
+        <!-- let包装很重要 -->
+        {{#let content =detail.contents }}
+         {{#if isImage content.mimeType}}
+            <img src="{{content.url}}" alt="{{content.key}}">
             {{else}}
-                <img src="images/no-prev.png" alt="no-prev.png">
+            <img src="/no-prev.png" alt="no-prev.png">
             {{/if}}
-                <p>文件名： {{detail.contents.key}}</p>
-                <p>文件大小： {{size detail.contents.fsize}}</p>
-                <p>文件类型： {{detail.contents.mimeType}}</p>
-                <p>文件hash值： {{detail.contents.hash}}</p>
-                <p>文件上传日期： {{date detail.contents.putTime}}</p>
-                <button class="btn-detail back">返回</button>
-                <button class="btn-detail download">下载</button>
-                <button class="btn-detail remove">删除</button>
-                <button class="btn-d move">重命名</button>
-                <button class="btn-d copy">复制</button>
-        {{else}}
-            {{> loading }}
-            <h1>Loading....</h1>
-        {{/if}}
+            <p>文件名： {{content.key}}</p>
+            <p>文件大小： {{size content.fsize}}</p>
+            <p>文件类型： {{content.mimeType}}</p>
+            <p>文件hash值： {{content.hash}}</p>
+            <p>文件上传日期： {{date content.putTime}}</p>
+            <button class="btn back">返回</button>
+            <button class="btn download">下载</button>
+            <button class="btn remove">删除</button>
+            {{/let}}
+        </div>
+        <div class="form-wrap">
+            <p>重命名或者移动：输入新的空间名和新的文件名称</p>
+            <div><label for="bucket">新的空间</label>
+            <input type="text" name="bucket" placeholder="默认还是此空间"></div>
+            <div><label for="key">新的名称</label>
+            <input type="text" name="key" placeholder="如：test/newname.jpg"></div>
+            <button class="btn move">重命名</button>
+            <p>复制：输入新的空间名和新的文件名称</p>
+            <div><label for="bucket-copy">新的空间</label>
+            <input type="text" name="bucket-copy" placeholder="默认还是此空间"></div>
+            <div><label for="key-copy">新的名称</label>
+            <input type="text" name="key-copy" placeholder="如：test/name1.jpg"></div>
+            <button class="btn copy">复制</button>
+        </div>
+        {{else}} {{> loading }} {{/if}}
     </div>
 </template>

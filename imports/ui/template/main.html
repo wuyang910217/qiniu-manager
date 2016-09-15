@@ -6,7 +6,6 @@
           {{/each}}
         {{else}}
           {{> loading}}
-          <h1>Loading....</h1>
         {{/if}}
     </div>
 </template>
@@ -16,7 +15,7 @@
     {{#if isImage contents.mimeType}}
       <img src="{{contents.url}}" alt="{{contents.key}}">
     {{else}}
-      <img src="images/no-prev.png" alt="{{contents.key}}">
+      <img src="/no-prev.png" alt="np-prev.png">
     {{/if}}
     <p>文件名: {{contents.key}}</p>
   <!-- <p>文件大小: {{size contents.fsize}}</p> -->

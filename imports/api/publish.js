@@ -8,7 +8,7 @@ Meteor.publish('contents',function(){
 });
 
 Meteor.publish('detail',function(id){
-  return Resources.find({_id: id},{fields: {contents: 1}});
+  return Resources.find({_id: id},{fields: {bucket: 1, contents: 1}});
 });
 
 
