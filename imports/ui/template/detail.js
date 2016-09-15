@@ -76,11 +76,13 @@ Template.detail.events({
     let bucket = instance.content.get('content-detail').bucket;
     let key = instance.content.get('content-detail').contents.key;
 
-    Meteor.call('resources.download',bucket,key,function(err){
+    Meteor.call('resources.download',bucket,key,function(err,ret){
       if (err) {
         console.log('resources.download---->'+err);
       }
       console.log('resources.download success');
+      console.log(ret);
+      window.open(ret);
     });
   },
   'click .move'(event,instance){

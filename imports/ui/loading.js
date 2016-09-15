@@ -17,6 +17,6 @@ Meteor.Spinner.options = {
   hwaccel: false, // Whether to use hardware acceleration
   className: 'spinner', // The CSS class to assign to the spinner
   zIndex: 2e9, // The z-index (defaults to 2000000000)
-  top: '200px', // Top position relative to parent in px
-  left: '650px' // Left position relative to parent in px
+  top: '50%', // Top position relative to parent in px
+  left: '50%' // Left position relative to parent in px
 };

@@ -14,6 +14,13 @@ Meteor.methods({
   'resources.clearAll' () {
     Resources.remove({});
   },
+  'resources.download'(bucket,key){
+    const policy = new qiniu.rs.GetPolicy();
+    let url = HOST_NAME+'/'+key;
+    let downloadUrl = policy.makeRequest(url);
+    console.log(downloadUrl);
+    return downloadUrl;
+  },
   'resources.remove'(id,bucket,key){
     const client = new qiniu.rs.Client();
     client.remove(bucket,key,Meteor.bindEnvironment(function(err,ret){
@@ -22,7 +29,8 @@ Meteor.methods({
         Resources.remove({_id: id});
       } else{
         // throw new Meteor.Error('error',err);
-        console.log('Meteor method resources.remove---->'+err);
+        console.log('Meteor method resources.remove---->');
+        console.log(err);
       }
     }));
   },
@@ -51,7 +59,8 @@ Meteor.methods({
         }
       } else {
         // 错误格式{ code: 631, error: 'no such bucket' }
-        console.log('Meteor method resources.add---->'+err);
+        console.log('Meteor method resources.add---->');
+        console.log(err);
       }
     }));
   },
@@ -66,6 +75,7 @@ Meteor.methods({
       } else{
         // throw new Meteor.Error('error',err);
         console.log('Meteor method resources.move---->'+err);
+        console.log(err);
       }
     }));
   },
@@ -94,12 +104,14 @@ Meteor.methods({
             };
             Resources.insert(data);
           }else{
-            console.log('Meteor method resources.copy 查询stat出错'+err);
+            console.log('Meteor method resources.copy 查询stat出错');
+            console.log(err);
           }
         }));
       } else{
         // throw new Meteor.Error('error',err);
-        console.log('Meteor method resources.copy---->'+err);
+        console.log('Meteor method resources.copy---->');
+        console.log(err);
       }
     }));
   },
