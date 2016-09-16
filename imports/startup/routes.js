@@ -24,7 +24,7 @@ FlowRouter.route('/main',{
 FlowRouter.route('/imageloader',{
   name: 'imageloader',
   action: function(){
-    BlazeLayout.render('mainLayout', {main: 'imageloader'});
+    BlazeLayout.render('homeLayout', {home: 'imageloader'});
   }
 });
 

@@ -1,6 +1,6 @@
 <template name='main'>
     <div class="main-wrapper">
-        {{#if isReady }}
+        {{#if isReady 'mainpage' }}
           {{#each contents}}
             {{> content}}
           {{/each}}

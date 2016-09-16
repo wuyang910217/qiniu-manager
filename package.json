@@ -5,6 +5,7 @@
     "start": "meteor run --settings settings.json"
   },
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "meteor-node-stubs": "~0.2.0",
     "moment": "^2.15.0",
     "qiniu": "^6.1.11"

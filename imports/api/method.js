@@ -34,6 +34,52 @@ Meteor.methods({
       }
     }));
   },
+  'resources.upload'(bucket,key,buffer){
+    let putPolicy = new qiniu.rs.PutPolicy(bucket+":"+key);
+    const token = putPolicy.token();
+
+    const extra = new qiniu.io.PutExtra();
+
+    buffer = new Buffer(buffer.replace(/^data:image\/\w+;base64,/, ""), 'base64');
+    // buffer = new Buffer(buffer,'base64');
+    console.log(buffer);
+
+    qiniu.io.put(token,key,buffer,extra,Meteor.bindEnvironment(function(err,ret){
+      if (!err) {
+        console.log('Meteor method resources.upload success');
+        console.log(ret);
+        const client = new qiniu.rs.Client();
+        client.stat(bucket,key,Meteor.bindEnvironment(function(err,ret){
+          if(!err){
+            const url = HOST_NAME + '/' + key + '?' + PIC_STYLE;
+            const data = {
+              bucket: bucket,
+              assess_key: ACCESS_KEY,
+              secret_key: SECRET_KEY,
+              hostname: HOST_NAME,
+              createdAt: new Date(),
+              contents: {
+                key: key,
+                hash: ret.hash,
+                fsize: ret.fsize,
+                mimeType: ret.mimeType,
+                putTime: ret.putTime,
+                url: url
+              }
+            };
+            Resources.insert(data);
+          }else{
+            console.log('Meteor method resources.upload 查询stat出错');
+            console.log(err);
+          }
+        }));
+      } else{
+        // throw new Meteor.Error('error',err);
+        console.log('Meteor method resources.upload---->');
+        console.log(err);
+      }
+    }));
+  },
   'resources.add' () {
     qiniu.rsf.listPrefix(BUCKET, null, null, null, null, Meteor.bindEnvironment(function(err, ret) {
       if (!err) {
