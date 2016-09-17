@@ -4,4 +4,8 @@
 @import 'home';
 @import 'mainpage';
 @import 'detail';
-@import '{}/node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss';
+
+// 使用bootstrap-sass npm包，字体不能导入
+// $icon-font-path: '{}/node_modules/bootstrap-sass/assets/fonts/bootstrap/' !default;
+// @import '{}/node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss';
+

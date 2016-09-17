@@ -8,3 +8,4 @@ import '../ui/template/imageloader.js';
 import '../ui/template/detail.js';
 
 import '../ui/loading.js';
+
