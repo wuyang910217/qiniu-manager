@@ -113,34 +113,35 @@ Meteor.methods({
       }
     }));
   },
-  'resources.move' (id, bucket, key, dstbucket, deskey, ) {
+  'resources.move' (id, bucket, key, dstbucket, deskey, hostname,) {
     const client = new qiniu.rs.Client();
     client.move(bucket, key, dstbucket, deskey, Meteor.bindEnvironment(function(err, ret) {
       if (!err) {
         console.log('Meteor method resources.move success');
         Resources.update(id, {
-          $set: { 'bucket': dstbucket, 'contents.key': deskey }
+          $set: { 'bucket': dstbucket, 'hostname': hostname, 'contents.key': deskey }
         });
       } else {
         // throw new Meteor.Error('error',err);
-        console.log('Meteor method resources.move---->' + err);
+        console.log('Meteor method resources.move---->');
         console.log(err);
       }
     }));
   },
-  'resources.copy' (bucket, key, dstbucket, deskey, ) {
+  'resources.copy' (bucket, key, dstbucket, deskey, hostname) {
     const client = new qiniu.rs.Client();
+    let content = Resources.findOne({key: key});
     client.copy(bucket, key, dstbucket, deskey, Meteor.bindEnvironment(function(err, ret) {
       if (!err) {
         console.log('Meteor method resources.copy success');
         client.stat(dstbucket, deskey, Meteor.bindEnvironment(function(err, ret) {
           if (!err) {
-            const url = HOST_NAME + '/' + deskey + '?' + PIC_STYLE;
+            const url = hostname + '/' + deskey + '?' + PIC_STYLE;
             const data = {
               bucket: dstbucket,
-              assess_key: ACCESS_KEY,
-              secret_key: SECRET_KEY,
-              hostname: HOST_NAME,
+              assess_key: content.assess_key,
+              secret_key: content.secret_key,
+              hostname: hostname,
               createdAt: new Date(),
               contents: {
                 key: deskey,

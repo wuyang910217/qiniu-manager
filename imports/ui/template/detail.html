@@ -1,20 +1,25 @@
 <template name='detail'>
   <div class="detail-wrapper">
     <div class="container">
-        {{#if Template.subscriptionsReady }}
+      {{#if Template.subscriptionsReady }}
       <div class="btn-wrapper">
         <!-- let包装很重要 -->
-        {{#let content =detail.contents }} {{#if isImage content.mimeType}}
-        <img src="{{content.url}}" alt="{{content.key}}" class="img-thumbnail img-responsive"> {{else}}
-        <img src="/no-prev.png" alt="no-prev.png" class="img-thumbnail img-responsive"> {{/if}}
+        {{#let content =detail.contents }}
+          {{#if isImage content.mimeType}}
+            <img src="{{content.url}}" alt="{{content.key}}" class="img-thumbnail img-responsive">
+          {{else}}
+            <img src="/no-prev.png" alt="no-prev.png" class="img-thumbnail img-responsive">
+          {{/if}}
         <p>文件名： {{content.key}}</p>
         <p>文件大小： {{size content.fsize}}</p>
         <p>文件类型： {{content.mimeType}}</p>
         <p>文件hash值： {{content.hash}}</p>
         <p>文件上传日期： {{date content.putTime}}</p>
+        {{/let}}
+        <strong><p>存储空间名： {{detail.bucket}}</p></strong>
+        <strong><p>域名： {{detail.hostname}}</p></strong>
         <button class="btn btn-primary" id="download">下载</button>
         <button class="btn btn-danger" id="remove">删除</button>
-        {{/let}}
       </div>
       <div class="form-wrapper">
         <div class="form-group">
@@ -23,7 +28,7 @@
         </div>
         <div class="form-group">
           <label for="hostname">域名</label>
-          <input type="text" name="hostname" placeholder="默认还是此域名" class="form-control">
+          <input type="text" name="hostname" placeholder="如http://odfhwma7g.bkt.clouddn.com  默认还是此域名" class="form-control">
         </div>
         <div class="form-group">
           <label for="key">新的文件名</label>
@@ -38,7 +43,7 @@
         </div>
         <div class="form-group">
           <label for="hostname1">域名</label>
-          <input type="text" name="hostname1" placeholder="默认还是此域名" class="form-control">
+          <input type="text" name="hostname1" placeholder="如http://odfhwma7g.bkt.clouddn.com 默认还是此域名" class="form-control">
         </div>
         <div class="form-group">
           <label for="bucket-copy">新的文件名</label>
@@ -48,7 +53,9 @@
           <button class="btn btn-primary" id="copy">复制</button>
         </div>
       </div>
-      {{else}} {{> loading }} {{/if}}
+      {{else}}
+        {{> loading }}
+      {{/if}}
     </div>
   </div>
 </template>

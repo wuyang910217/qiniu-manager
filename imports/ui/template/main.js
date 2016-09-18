@@ -16,10 +16,10 @@ import './main.html';
 // });
 
 Template.main.helpers({
-  isReady(sub){
+  isReady(sub) {
     if (sub) {
       return FlowRouter.subsReady(sub);
-    } else{
+    } else {
       return FlowRouter.subsReady();
     }
   },
@@ -27,7 +27,7 @@ Template.main.helpers({
     console.log('contents helper只执行一次');
     console.log(Resources.find().fetch());
     // 嵌套的时间排序
-    return Resources.find({},{sort: {'contents.putTime': -1}});
+    return Resources.find({}, { sort: { 'contents.putTime': -1 } });
   }
 });
 
@@ -40,17 +40,19 @@ Template.content.helpers({
   //     return num.toFixed(2)+ 'kb';
   //   }
   // },
-  isImage(type){
-    return type.indexOf('image/')>-1;
+  isImage(type) {
+    return type.indexOf('image/') > -1;
   },
   // date(time) {
   //   let unix=time.toString().slice(0,10);
   //   return moment.unix(unix).format("YYYY年MM月DD日");
   // },
-  pathForDetail(){
+
+  // 从这里得到id，并存到params里，其他地方都可以调用
+  pathForDetail() {
     let params = {
       queryId: this._id
     };
-    return FlowRouter.path('detail',params);
+    return FlowRouter.path('detail', params);
   }
 });

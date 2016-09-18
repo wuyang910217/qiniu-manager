@@ -58,6 +58,7 @@
 .main-wrapper {
   .thumbnail {
     height: 250px;
+    width: auto;
     border: 2px solid #f66;
     img {
       width: 200px;
@@ -97,6 +98,8 @@
     font-size: 18px;
     img {
       margin-bottom: 10px;
+      width: 200px;
+      height: 200px;
     }
     .btn {
       margin: 10px;

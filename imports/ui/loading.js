@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { Spinner } from 'meteor/sacha:spin';
+// import { Spinner } from 'meteor/sacha:spin';
 import './loading.html';
 
 Meteor.Spinner.options = {

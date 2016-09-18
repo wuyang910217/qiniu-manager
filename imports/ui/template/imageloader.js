@@ -40,7 +40,7 @@ Template.imageloader.events({
       // let buffer2string = new Buffer(buffer).toString('base64');
       // console.log(buffer2string);
 
-      Meteor.call('resources.upload', bucket,fileName,hostname,buffer,function(err) {
+      Meteor.call('resources.upload', bucket, fileName, hostname, buffer, function(err) {
         if (err) {
           console.log('resources.upload---error' + err);
         } else {

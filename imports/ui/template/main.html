@@ -1,34 +1,31 @@
 <template name='main'>
-    <div class="main-wrapper">
-        {{#if isReady 'mainpage' }}
-  <div class="row">
-          {{#each contents}}
-            {{> content}}
-          {{/each}}
-  </div>
-        {{else}}
-          {{> loading}}
-        {{/if}}
+  <div class="main-wrapper">
+    {{#if isReady 'mainpage' }}
+    <div class="row">
+      {{#each contents}} {{> content}} {{/each}}
     </div>
+    {{else}}
+      {{> loading}}
+    {{/if}}
+  </div>
 </template>
 
 <template name='content'>
-    <div class="col-sm-4 col-md-3">
-      <div class="thumbnail">
-        <a href="{{pathForDetail}}">
-    {{#if isImage contents.mimeType}}
-      <img src="{{contents.url}}" alt="{{contents.key}}" class="img-rounded img-responsive">
-    {{else}}
-      <img src="/no-prev.png" alt="np-prev.png" class="img-rounded img-responsive">
-    {{/if}}
+  <div class="col-xs-6 col-sm-4 col-md-3">
+    <div class="thumbnail">
+      <a href="{{pathForDetail}}">
+      {{#if isImage contents.mimeType}}
+        <img src="{{contents.url}}" alt="{{contents.key}}" class="img-rounded img-responsive">
+      {{else}}
+        <img src="/no-prev.png" alt="np-prev.png" class="img-rounded img-responsive">
+      {{/if}}
   <!-- <p>文件大小: {{size contents.fsize}}</p> -->
   <!-- <p>文件类型: {{contents.mimeType}}</p> -->
   <!-- <p>上传日期: {{date contents.putTime}}</p> -->
-  </a>
-  <div class="caption">
-    <p>文件名: {{contents.key}}</p>
-  </div>
+      </a>
+      <div class="caption">
+        <p>{{contents.key}}</p>
       </div>
     </div>
-
+  </div>
 </template>
