@@ -6,6 +6,7 @@ import '../ui/template/home.js';
 import '../ui/template/main.js';
 import '../ui/template/imageloader.js';
 import '../ui/template/detail.js';
+import '../ui/template/query.js';
 
 import '../ui/loading.js';
 

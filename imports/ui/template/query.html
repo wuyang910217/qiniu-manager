@@ -1,0 +1,24 @@
+<template name='query'>
+  <div class="query-wrapper">
+    <div class="form-group">
+      <label for="ak">Access Key值</label>
+      <input type="text" name='ak' class="form-control" placeholder="不填，为默认配置">
+    </div>
+    <div class="form-group">
+      <label for="sk">Secret Key值</label>
+      <input type="text" name='sk' class="form-control" placeholder="不填，为默认配置">
+    </div>
+    <div class="form-group">
+      <label for="bucket">存储空间名</label>
+      <input type="text" name='bucket' class="form-control" placeholder="不填，为默认配置 注意 存储空间名和域名必须一一对照">
+    </div>
+    <div class="form-group">
+      <label for="hostname">域名</label>
+      <input type="text" name='hostname' class="form-control" placeholder="
+如http://odfhwma7g.bkt.clouddn.com  不填，为默认配置">
+    </div>
+    <div class="form-group">
+      <button class="btn btn-primary" id="query">查询</button>
+    </div>
+  </div>
+</template>

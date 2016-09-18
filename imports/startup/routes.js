@@ -7,7 +7,7 @@ import '../ui/not-found.html';
 FlowRouter.route('/', {
   name: 'home',
   action: function(){
-    BlazeLayout.render('homeLayout', {home: 'home'});
+    BlazeLayout.render('home');
   }
 });
 
@@ -24,7 +24,14 @@ FlowRouter.route('/main',{
 FlowRouter.route('/imageloader',{
   name: 'imageloader',
   action: function(){
-    BlazeLayout.render('homeLayout', {home: 'imageloader'});
+    BlazeLayout.render('mainLayout', {main: 'imageloader'});
+  }
+});
+
+FlowRouter.route('/query',{
+  name: 'query',
+  action: function(){
+    BlazeLayout.render('mainLayout', {main: 'query'});
   }
 });
 
@@ -34,7 +41,7 @@ FlowRouter.route('/detail/:queryId',{
   //   this.register('detail-content',Meteor.subscribe('detail',params.queryId));
   // },
   action: function(){
-    BlazeLayout.render('homeLayout', {home: 'detail'});
+    BlazeLayout.render('mainLayout', {main: 'detail'});
   }
 });
 

@@ -1,17 +1,25 @@
 <template name='imageloader'>
-  <div class="upload-container">
+  <div class="upload-wrapper">
+  <p>一个用户可以有多个存储空间，但仅限本用户，与查询不同，查询可以根据提供的ak和sk查询其他用户的存储内容。</p>
     <div class="form-group">
       <label for="file">要上传的文件</label>
       <input type="file" name="file">
-      <label for="bucket">空间名</label>
-      <input type="text" name="bucket" placeholder="不填 为默认" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="bucket">存储空间名</label>
+      <input type="text" name="bucket" placeholder="不填 为默认配置 注意 存储空间名和域名必须一一对照" class="form-control">
+    </div>
+    <div class="form-group">
+      <label for="hostname">域名</label>
+      <input type="text" name='hostname' class="form-control" placeholder="
+如http://odfhwma7g.bkt.clouddn.com  不填，为默认配置">
+    </div>
+    <div class="form-group">
       <label for="path">路径名</label>
-      <input type="text" name="path" placeholder="默认在主目录下" class="form-control">
-      <button class="btn-primary btm-lg upload">上传</button>
-      <button type="button" class="btn btn-danger btn-lg">
-  <span class="glyphicon glyphicon-home"></span> Star
-</button>
-<span class="glyphicon glyphicon-home"></span>
+      <input type="text" name="path" placeholder="如 test 默认在主目录下" class="form-control">
+    </div>
+    <div class="form-group">
+      <button class="btn btn-primary" id="upload">上传</button>
     </div>
   </div>
 </template>

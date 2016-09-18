@@ -3,14 +3,14 @@ import { Spinner } from 'meteor/sacha:spin';
 import './loading.html';
 
 Meteor.Spinner.options = {
-  lines: 13, // The number of lines to draw
-  length: 10, // The length of each line
-  width: 5, // The line thickness
+  lines: 15, // The number of lines to draw
+  length: 8, // The length of each line
+  width: 4, // The line thickness
   radius: 15, // The radius of the inner circle
   corners: 0.7, // Corner roundness (0..1)
   rotate: 0, // The rotation offset
   direction: 1, // 1: clockwise, -1: counterclockwise
-  color: '#f33', // #rgb or #rrggbb
+  color: '#317EF3', // #rgb or #rrggbb
   speed: 1, // Rounds per second
   trail: 60, // Afterglow percentage
   shadow: true, // Whether to render a shadow

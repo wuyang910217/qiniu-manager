@@ -1,9 +1,7 @@
-@import 'normalize';
+// @import 'normalize';
+//twbs:bootstrap默认有normalize
+
 @import 'common';
-@import 'notfound';
-@import 'home';
-@import 'mainpage';
-@import 'detail';
 
 // 使用bootstrap-sass npm包，字体不能导入
 // $icon-font-path: '{}/node_modules/bootstrap-sass/assets/fonts/bootstrap/' !default;

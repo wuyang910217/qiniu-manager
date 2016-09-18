@@ -51,10 +51,6 @@ Template.detail.helpers({
 });
 
 Template.detail.events({
-  'click .back'(event){
-    event.preventDefault();
-    FlowRouter.go('/main');
-  },
   'click .remove'(event,instance){
     event.preventDefault();
     alert('你确定要删除此文件吗？');
@@ -75,8 +71,9 @@ Template.detail.events({
 
     let bucket = instance.content.get('content-detail').bucket;
     let key = instance.content.get('content-detail').contents.key;
+    let hostname = instance.content.get('content-detail').contents.hostname;
 
-    Meteor.call('resources.download',bucket,key,function(err,ret){
+    Meteor.call('resources.download',bucket,key,hostname,function(err,ret){
       if (err) {
         console.log('resources.download---->'+err);
       }
