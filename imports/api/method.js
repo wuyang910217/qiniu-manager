@@ -130,7 +130,6 @@ Meteor.methods({
   },
   'resources.copy' (bucket, key, dstbucket, deskey, hostname) {
     const client = new qiniu.rs.Client();
-    let content = Resources.findOne({key: key});
     client.copy(bucket, key, dstbucket, deskey, Meteor.bindEnvironment(function(err, ret) {
       if (!err) {
         console.log('Meteor method resources.copy success');
@@ -139,8 +138,8 @@ Meteor.methods({
             const url = hostname + '/' + deskey + '?' + PIC_STYLE;
             const data = {
               bucket: dstbucket,
-              assess_key: content.assess_key,
-              secret_key: content.secret_key,
+              assess_key: ACCESS_KEY,
+              secret_key: SECRET_KEY,
               hostname: hostname,
               createdAt: new Date(),
               contents: {
