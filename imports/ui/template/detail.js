@@ -4,7 +4,9 @@ import { Template } from 'meteor/templating';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import { $ } from 'meteor/jquery';
 import moment from 'moment';
-
+import { isEmpty } from 'lodash/lang';
+import { startsWith } from 'lodash/string';
+import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 import { Resources } from '../../api/resources.js';
 import './detail.html';
 
@@ -21,16 +23,25 @@ Template.detail.helpers({
   detail() {
     // 每次运行detail helper 都会执行一次
     let id = FlowRouter.getParam('queryId');
-    let detailContent = Resources.findOne({ _id: id });
+    let detailContent = Resources.findOne({ _id: id }) || {};
+    if (isEmpty(detailContent)) {
+      // render notFound 页面会闪过layout布局的内容，需要重新定义一个dataNotFound，
+      // 作用于layout内部
+      // BlazeLayout.render('notFound');
+      BlazeLayout.render('mainLayout', {main: 'dataNotFound'});
+      // 用下面的方法需要定义/404路由，且当前路由变成/404,
+      // 而不是localhost:3000/detail/2JM2p8Ngdddddddddddddd
+      // FlowRouter.go('/404');
+    } else{
+      let instance = Template.instance();
+      instance.content.set('content-detail', detailContent);
+      console.log(instance.content.get('content-detail'));
 
-    let instance = Template.instance();
-    instance.content.set('content-detail', detailContent);
-    console.log(instance.content.get('content-detail'));
-
-    console.log('每次运行detail helper 都会执行一次');
-    console.log('用{{#let}} {{/let}}包装后，只会执行一次');
-    console.log(detailContent.contents.key, detailContent.contents.mimeType);
-    return detailContent;
+      console.log('每次运行detail helper 都会执行一次');
+      console.log('用{{#let}} {{/let}}包装后，只会执行一次');
+      console.log(detailContent,detailContent.contents.mimeType);
+      return detailContent;
+    }
   },
   size(size) {
     if (size >= 1024 * 1024) {
@@ -47,6 +58,7 @@ Template.detail.helpers({
   },
   isImage(type) {
     return type.indexOf('image/') > -1;
+    // return startsWith(type, 'image/');
   },
 });
 
@@ -58,12 +70,14 @@ Template.detail.events({
     let bucket = instance.content.get('content-detail').bucket;
     let key = instance.content.get('content-detail').contents.key;
 
-    Meteor.call('resources.remove', id, bucket, key, function(err) {
+    Meteor.call('resources.remove', id, bucket, key, function(err,ret) {
       if (err) {
         console.log('resources.remove---->' + err);
+      } else {
+        console.log('resources.remove success');
+        console.log(ret);
+        FlowRouter.go('/main');
       }
-      console.log('resources.remove success');
-      FlowRouter.go('/main');
     });
   },
   'click #download' (event, instance) {

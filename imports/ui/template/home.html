@@ -1,13 +1,14 @@
 <template name='home'>
   <div class="home-wrapper">
     <div class="container">
+      <p>没有错误提示，最大显示100条内容</p>
       <p>每次查询，都会清空数据库；</p>
       <p>七牛可以有多个内容储存空间，显示默认配置的储存空间中的内容；</p>
       <p>内容存储空间与域名之间一一对应，否则不能正确显示；</p>
       <p>移动或者重命名时，不会改变文件的mimyType类型，如test.html重命名为test.jpg，它的类型依然是text/html，另外本地putTime时间没有更新；</p>
       <p>复制时，不会改变文件的mimyType类型，如test.png重命名为test.jpg，它的类型依然是text/png，但是图片可以打开。另外复制时，它的hash值不会改变；</p>
       <p>类型：video/mp4 image/jpeg image/png application/json application/javascript text/plain text/html text/css text/x-csrc；</p>
-      <p>七牛存储区域有华东和华北，两个区域间不能移动，复制文件,同区域可以；</p>
+      <p>七牛存储区域有华东和华北，两个区域间不能移动，复制文件，同区域可以；</p>
       <button class="btn btn-primary btn-lg" id="query-d">默认配置查询</button>
       <button class="btn btn-danger btn-lg" id="query-n">新建配置查询</button>
     </div>

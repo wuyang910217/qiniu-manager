@@ -4,7 +4,7 @@ import { check } from 'meteor/check';
 import { Resources } from './resources.js';
 
 Meteor.publish('contents',function(){
-  return Resources.find({},{fields: {contents: 1},limit: 50});
+  return Resources.find({},{fields: {contents: 1},limit: 100});
 });
 
 Meteor.publish('detail',function(id){

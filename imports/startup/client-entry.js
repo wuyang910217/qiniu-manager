@@ -1,3 +1,6 @@
+import '../ui/not-found.html';
+import '../ui/data-not-found.html';
+
 import '../ui/styles/main.scss';
 
 import './routes.js';

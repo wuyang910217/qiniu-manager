@@ -16,7 +16,8 @@ Template.query.events({
     let ak = $('input[name=ak]').val();
     let sk = $('input[name=sk]').val();
     let hostname = $('input[name=hostname]').val();
-    console.log(bucket, ak, sk, hostname);
+    let prefix = $('input[name=prefix]').val();
+    console.log(bucket, ak, sk, hostname,prefix);
 
     if (bucket === '') {
       bucket = BUCKET;
@@ -39,7 +40,7 @@ Template.query.events({
       console.log('清空数据库成功');
     });
 
-    Meteor.call('resources.add', bucket, ak, sk, hostname, function(err) {
+    Meteor.call('resources.add', bucket, ak, sk, hostname, prefix, function(err) {
       if (err) {
         console.log('resources.add---->error' + err);
       } else {

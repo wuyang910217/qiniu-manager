@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
+import { Async } from 'meteor/meteorhacks:async';
 
 import { Resources } from './resources.js';
 import { BUCKET, ACCESS_KEY, SECRET_KEY, PIC_STYLE, HOST_NAME } from './conf.js';
@@ -9,6 +10,11 @@ import qiniu from 'qiniu';
 // //
 qiniu.conf.ACCESS_KEY = ACCESS_KEY;
 qiniu.conf.SECRET_KEY = SECRET_KEY;
+
+const client = new qiniu.rs.Client();
+let wrapQiniuUpload = Async.wrap(qiniu.io, 'put');
+let wrapQiniuList = Async.wrap(qiniu.rsf, 'listPrefix');
+let wrapQiniuClient = Async.wrap(client, ['remove','stat','move','copy']);
 
 Meteor.methods({
   'resources.clearAll' () {
@@ -23,16 +29,19 @@ Meteor.methods({
   },
   'resources.remove' (id, bucket, key) {
     const client = new qiniu.rs.Client();
-    client.remove(bucket, key, Meteor.bindEnvironment(function(err, ret) {
-      if (!err) {
-        console.log('Meteor method resources.remove success');
-        Resources.remove({ _id: id });
-      } else {
-        // throw new Meteor.Error('error',err);
-        console.log('Meteor method resources.remove---->');
-        console.log(err);
-      }
-    }));
+    // client.remove(bucket, key, Meteor.bindEnvironment(function(err, ret) {
+    //   if (!err) {
+    //     console.log('Meteor method resources.remove success');
+    //     Resources.remove({ _id: id });
+    //   } else {
+    //     // throw new Meteor.Error('error',err);
+    //     console.log('Meteor method resources.remove---->');
+    //     console.log(err);
+    //   }
+    // }));
+    // const ret = wrapQiniuClient.remove(bucket,key);
+
+    // return ret;
   },
   'resources.upload' (bucket, key, hostname, buffer) {
     let putPolicy = new qiniu.rs.PutPolicy(bucket + ":" + key);
@@ -81,10 +90,10 @@ Meteor.methods({
       }
     }));
   },
-  'resources.add' (bucket, ak, sk, hostname) {
+  'resources.add' (bucket, ak, sk, hostname, prefix) {
     qiniu.conf.ACCESS_KEY = ak;
     qiniu.conf.SECRET_KEY = sk;
-    qiniu.rsf.listPrefix(bucket, null, null, null, null, Meteor.bindEnvironment(function(err, ret) {
+    qiniu.rsf.listPrefix(bucket, prefix, null, null, null, Meteor.bindEnvironment(function(err, ret) {
       if (!err) {
         console.log('Meteor method resources.add success');
         for (var i = ret.items.length - 1; i >= 0; i--) {

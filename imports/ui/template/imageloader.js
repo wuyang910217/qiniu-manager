@@ -49,6 +49,7 @@ Template.imageloader.events({
       });
     };
     reader.readAsDataURL(file);
+    // reader.readAsText(file);
     // reader.readAsBinaryString(file);
   },
 });

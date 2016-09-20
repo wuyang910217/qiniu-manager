@@ -22,7 +22,7 @@ Template.home.events({
       console.log('清空数据库成功');
     });
 
-    Meteor.call('resources.add', BUCKET, ACCESS_KEY, SECRET_KEY, HOST_NAME, function(error, instance) {
+    Meteor.call('resources.add', BUCKET, ACCESS_KEY, SECRET_KEY, HOST_NAME, null, function(error, instance) {
       if (error) {
         instance.error.set('error', error);
         console.log(error);
