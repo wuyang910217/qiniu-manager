@@ -1,8 +1,15 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
+import { EasySearch } from 'meteor/easy:search';
 import { SimpleSchema, attachSchema } from 'meteor/aldeed:simple-schema';
 
 export const Resources = new Mongo.Collection('resources');
+
+export const ResourcesIndex = new EasySearch.Index({
+  collection: Resources,
+  fields: ['bucket','contents.key'],
+  engine: new EasySearch.Minimongo()
+});
 
 let Sechma = {};
 

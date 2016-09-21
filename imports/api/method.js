@@ -29,18 +29,18 @@ Meteor.methods({
   },
   'resources.remove' (id, bucket, key) {
     const client = new qiniu.rs.Client();
-    // client.remove(bucket, key, Meteor.bindEnvironment(function(err, ret) {
-    //   if (!err) {
-    //     console.log('Meteor method resources.remove success');
-    //     Resources.remove({ _id: id });
-    //   } else {
-    //     // throw new Meteor.Error('error',err);
-    //     console.log('Meteor method resources.remove---->');
-    //     console.log(err);
-    //   }
-    // }));
+    client.remove(bucket, key, Meteor.bindEnvironment(function(err, ret) {
+      if (!err) {
+        console.log('Meteor method resources.remove success');
+        Resources.remove({ _id: id });
+      } else {
+        // throw new Meteor.Error('error',err);
+        console.log('Meteor method resources.remove---->');
+        console.log(err);
+      }
+    }));
     // const ret = wrapQiniuClient.remove(bucket,key);
-
+    // console.log(ret);
     // return ret;
   },
   'resources.upload' (bucket, key, hostname, buffer) {
@@ -136,6 +136,9 @@ Meteor.methods({
         console.log(err);
       }
     }));
+    //
+    // const ret = wrapQiniuClient.move(bucket,key,dstbucket,deskey);
+    // console.log(ret);
   },
   'resources.copy' (bucket, key, dstbucket, deskey, hostname) {
     const client = new qiniu.rs.Client();

@@ -1,0 +1,8 @@
+<template name='searchBox'>
+  {{> EasySearch.Input index=resourcesIndex attributes=inputAttribute}}
+  <ul>
+    {{#EasySearch.Each index=resoucesIndex}}
+      <li>{{bucket}}</li>
+    {{/EasySearch.Each}}
+  </ul>
+</template>

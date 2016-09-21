@@ -57,8 +57,7 @@ Template.detail.helpers({
     return moment.unix(unix).format("YYYY年MM月DD日");
   },
   isImage(type) {
-    return type.indexOf('image/') > -1;
-    // return startsWith(type, 'image/');
+    return startsWith(type, 'image/');
   },
 });
 
