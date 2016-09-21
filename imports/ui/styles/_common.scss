@@ -9,7 +9,7 @@
     width: 60%;
     color: #fff;
     font-size: 18px;
-    margin-top: 150px;
+    margin-top: 100px;
     text-align: center;
     .btn {
       margin-top: 30px;
@@ -28,7 +28,7 @@
 }
 
 // main layout
-.main-wrapper {
+.layout-wrapper {
   background: #f88;
   display: block;
   min-height: 100vh;
@@ -44,6 +44,13 @@
 .query-wrapper {
   width: 60%;
   margin: 0 auto;
+  .err {
+    text-align: center;
+    height: 50px;
+    margin: 10px;
+    line-height: 50px;
+    color: red;
+  }
   .form-group {
     margin: 20px;
     font-size: 18px;
@@ -78,6 +85,13 @@
 .upload-wrapper {
   width: 60%;
   margin: 0 auto;
+  .err {
+    text-align: center;
+    height: 50px;
+    margin: 10px;
+    line-height: 50px;
+    color: red;
+  }
   .form-group {
     padding: 10px;
     font-size: 18px;
@@ -91,6 +105,14 @@
 
 // detail page
 .detail-wrapper {
+  .err {
+    text-align: center;
+    height: 50px;
+    margin-top: -10px;
+    margin-bottom: -10px;
+    line-height: 50px;
+    color: red;
+  }
   .btn-wrapper{
     float: left;
     width:45%;

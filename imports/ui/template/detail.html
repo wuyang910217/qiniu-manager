@@ -2,6 +2,9 @@
   <div class="detail-wrapper">
     <div class="container">
       {{#if Template.subscriptionsReady }}
+        {{#if hasError}}
+          <h3 class="err">操作失败：{{error.err}}，错误码：{{error.code}}</h3>
+        {{/if}}
       <div class="btn-wrapper">
         <!-- let包装很重要 -->
         {{#let content =detail.contents }}
@@ -59,3 +62,4 @@
     </div>
   </div>
 </template>
+

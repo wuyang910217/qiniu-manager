@@ -8,18 +8,34 @@ import { isEmpty } from 'lodash/lang';
 import { startsWith } from 'lodash/string';
 import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 import { Resources } from '../../api/resources.js';
+import { Errors } from '../../api/errors.js';
 import './detail.html';
 
 Template.detail.onCreated(function() {
-  this.content = new ReactiveDict();
   let self = this;
+  this.content = new ReactiveDict();
   // self.autorun(function(){
   let queryId = FlowRouter.getParam('queryId');
   self.subscribe('detail', queryId);
+  self.subscribe('error');
+  Meteor.call('errors.clearAll');
   // });
 });
 
+Template.detail.onRendered(function(){
+
+});
 Template.detail.helpers({
+  error(){
+    let error = Errors.findOne({}) || {};
+    console.log(error);
+    if (!isEmpty(error)) {
+      return error;
+    }
+  },
+  hasError(){
+    return Errors.find({}).count() !== 0;
+  },
   detail() {
     // 每次运行detail helper 都会执行一次
     let id = FlowRouter.getParam('queryId');
@@ -28,6 +44,7 @@ Template.detail.helpers({
       // render notFound 页面会闪过layout布局的内容，需要重新定义一个dataNotFound，
       // 作用于layout内部
       // BlazeLayout.render('notFound');
+      console.log('empty++++');
       BlazeLayout.render('mainLayout', {main: 'dataNotFound'});
       // 用下面的方法需要定义/404路由，且当前路由变成/404,
       // 而不是localhost:3000/detail/2JM2p8Ngdddddddddddddd
@@ -69,12 +86,12 @@ Template.detail.events({
     let bucket = instance.content.get('content-detail').bucket;
     let key = instance.content.get('content-detail').contents.key;
 
-    Meteor.call('resources.remove', id, bucket, key, function(err,ret) {
+    Meteor.call('errors.clearAll');
+    Meteor.call('resources.remove', id, bucket, key, function(err) {
       if (err) {
         console.log('resources.remove---->' + err);
       } else {
         console.log('resources.remove success');
-        console.log(ret);
         FlowRouter.go('/main');
       }
     });
@@ -99,6 +116,7 @@ Template.detail.events({
   'click #move' (event, instance) {
     event.preventDefault();
 
+    Meteor.call('errors.clearAll');
     let newBucket = $('input[name=bucket]').val().trim();
     let newhostname = $('input[name=hostname]').val().trim();
     let newKey = $('input[name=key]').val().trim();
@@ -128,6 +146,7 @@ Template.detail.events({
   'click #copy' (event, instance) {
     event.preventDefault();
 
+    Meteor.call('errors.clearAll');
     let newBucket = $('input[name=bucket-copy]').val().trim();
     let newhostname = $('input[name=hostname1]').val().trim();
     let newKey = $('input[name=key-copy]').val().trim();
@@ -155,3 +174,5 @@ Template.detail.events({
     }
   }
 });
+
+

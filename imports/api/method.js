@@ -3,6 +3,7 @@ import { check } from 'meteor/check';
 import { Async } from 'meteor/meteorhacks:async';
 
 import { Resources } from './resources.js';
+import { Errors } from './errors.js';
 import { BUCKET, ACCESS_KEY, SECRET_KEY, PIC_STYLE, HOST_NAME } from './conf.js';
 
 import qiniu from 'qiniu';
@@ -17,6 +18,13 @@ let wrapQiniuList = Async.wrap(qiniu.rsf, 'listPrefix');
 let wrapQiniuClient = Async.wrap(client, ['remove','stat','move','copy']);
 
 Meteor.methods({
+  'errors.clearAll'(){
+    Errors.remove({});
+  },
+});
+
+
+Meteor.methods({
   'resources.clearAll' () {
     Resources.remove({});
   },
@@ -28,7 +36,6 @@ Meteor.methods({
     return downloadUrl;
   },
   'resources.remove' (id, bucket, key) {
-    const client = new qiniu.rs.Client();
     client.remove(bucket, key, Meteor.bindEnvironment(function(err, ret) {
       if (!err) {
         console.log('Meteor method resources.remove success');
@@ -36,6 +43,7 @@ Meteor.methods({
       } else {
         // throw new Meteor.Error('error',err);
         console.log('Meteor method resources.remove---->');
+        Errors.insert({err: err.error,code: err.code});
         console.log(err);
       }
     }));
@@ -80,12 +88,14 @@ Meteor.methods({
             Resources.insert(data);
           } else {
             console.log('Meteor method resources.upload 查询stat出错');
+            Errors.insert({err: err.error,code: err.code});
             console.log(err);
           }
         }));
       } else {
         // throw new Meteor.Error('error',err);
         console.log('Meteor method resources.upload---->');
+        Errors.insert({err: err.error,code: err.code});
         console.log(err);
       }
     }));
@@ -118,12 +128,12 @@ Meteor.methods({
       } else {
         // 错误格式{ code: 631, error: 'no such bucket' }
         console.log('Meteor method resources.add---->');
+        Errors.insert({err: err.error,code: err.code});
         console.log(err);
       }
     }));
   },
   'resources.move' (id, bucket, key, dstbucket, deskey, hostname,) {
-    const client = new qiniu.rs.Client();
     client.move(bucket, key, dstbucket, deskey, Meteor.bindEnvironment(function(err, ret) {
       if (!err) {
         console.log('Meteor method resources.move success');
@@ -133,6 +143,7 @@ Meteor.methods({
       } else {
         // throw new Meteor.Error('error',err);
         console.log('Meteor method resources.move---->');
+        Errors.insert({err: err.error,code: err.code});
         console.log(err);
       }
     }));
@@ -141,7 +152,6 @@ Meteor.methods({
     // console.log(ret);
   },
   'resources.copy' (bucket, key, dstbucket, deskey, hostname) {
-    const client = new qiniu.rs.Client();
     client.copy(bucket, key, dstbucket, deskey, Meteor.bindEnvironment(function(err, ret) {
       if (!err) {
         console.log('Meteor method resources.copy success');
@@ -166,12 +176,14 @@ Meteor.methods({
             Resources.insert(data);
           } else {
             console.log('Meteor method resources.copy 查询stat出错');
+            Errors.insert({err: err.error,code: err.code});
             console.log(err);
           }
         }));
       } else {
         // throw new Meteor.Error('error',err);
         console.log('Meteor method resources.copy---->');
+        Errors.insert({err: err.error,code: err.code});
         console.log(err);
       }
     }));

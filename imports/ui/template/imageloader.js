@@ -2,10 +2,28 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import { $ } from 'meteor/jquery';
+import { isEmpty } from 'lodash/lang';
 import { BUCKET, HOST_NAME } from '../../api/conf.js';
-
+import { Errors } from '../../api/errors.js';
 import './imageloader.html';
 
+Template.imageloader.onCreated(function(){
+  this.subscribe('error');
+  Meteor.call('errors.clearAll');
+});
+
+Template.imageloader.helpers({
+  error(){
+    let error = Errors.findOne({}) || {};
+    console.log(error);
+    if (!isEmpty(error)) {
+      return error;
+    }
+  },
+  hasError(){
+    return Errors.find({}).count() !== 0;
+  },
+})
 Template.imageloader.events({
   'click #upload' (event, instance) {
     event.preventDefault();
@@ -31,6 +49,8 @@ Template.imageloader.events({
       fileName = path + '/' + fileName;
     }
     console.log(bucket, hostname, fileName);
+
+    Meteor.call('errors.clearAll');
 
     let reader = new FileReader();
     reader.onload = function() {

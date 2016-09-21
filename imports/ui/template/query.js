@@ -1,12 +1,31 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
-import { ReactiveDict } from 'meteor/reactive-dict';
 import { FlowRouter } from 'meteor/kadira:flow-router';
+import { isEmpty } from 'lodash/lang';
 import { $ } from 'meteor/jquery';
+import { Errors } from '../../api/errors.js';
 
 import { BUCKET, ACCESS_KEY, SECRET_KEY, HOST_NAME } from '../../api/conf.js';
 
 import './query.html';
+
+Template.query.onCreated(function(){
+  this.subscribe('error');
+  Meteor.call('errors.clearAll');
+});
+
+Template.query.helpers({
+  error(){
+    let error = Errors.findOne({}) || {};
+    console.log(error);
+    if (!isEmpty(error)) {
+      return error;
+    }
+  },
+  hasError(){
+    return Errors.find({}).count() !== 0;
+  },
+});
 
 Template.query.events({
   'click #query' (event) {
@@ -33,6 +52,7 @@ Template.query.events({
     }
     console.log(bucket, ak, sk, hostname);
 
+    Meteor.call('errors.clearAll');
     Meteor.call('resources.clearAll', function(error) {
       if (error) {
         console.log('清空数据库失败' + error);
