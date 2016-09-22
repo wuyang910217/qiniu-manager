@@ -154,17 +154,17 @@
 
 // error and success
 .success {
+  display: none;
   text-align: center;
-  margin: 10px;
   color: #512DA8;
   height: 50px;
   line-height: 50px;
 }
 
 .err {
+  display: none;
   text-align: center;
   height: 50px;
-  margin: 10px;
   line-height: 50px;
   color: #D32F2F;
 }

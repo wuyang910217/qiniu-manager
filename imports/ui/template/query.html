@@ -1,8 +1,6 @@
 <template name='query'>
   <div class="query-wrapper">
-    {{#if hasError}}
-      <h3 class="err">操作失败：{{error.error}}，错误码：{{error.code}}</h3>
-    {{/if}}
+    <h3 class="err">操作失败：{{error.error}}，错误码：{{error.code}}</h3>
     <div class="form-group">
       <label for="ak">Access Key值</label>
       <input type="text" name='ak' class="form-control" placeholder="不填，为默认配置">

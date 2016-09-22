@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { Template } from 'meteor/templating';
 import { isEmpty } from 'lodash/lang';
+import { $ } from 'meteor/jquery';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import { BUCKET, ACCESS_KEY, SECRET_KEY, HOST_NAME } from '../../api/conf.js';
 
@@ -16,12 +17,11 @@ Template.home.helpers({
   error() {
     const instance = Template.instance();
     const error = instance.error.get('error');
-    return error;
-  },
-  hasError() {
-    const instance = Template.instance();
-    const error = instance.error.get('error');
-    return !isEmpty(error);
+    if (!isEmpty(error)) {
+      $('.err').show();
+      $('.err').fadeOut(5000);
+      return error;
+    }
   },
 });
 
@@ -32,7 +32,7 @@ Template.home.events({
     Meteor.call('resources.clearAll', (err) => {
       if (err) {
         console.log(`清空数据库失败 ${err}`);
-        instance.error.set('error',err.reason);
+        instance.error.set('error', err.reason);
       }
       console.log('清空数据库成功');
     });

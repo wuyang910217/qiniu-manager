@@ -15,7 +15,7 @@ FlowRouter.route('/main',{
   action: () => {
     BlazeLayout.render('mainLayout', {main: 'main'});
   },
-  subscriptions: function(params){
+  subscriptions: function(){
     this.register('mainpage',Meteor.subscribe('contents'));
   },
 });
@@ -45,7 +45,7 @@ FlowRouter.route('/detail/:queryId',{
   }
 });
 
-function notExist(context,redirect,stop){
+function notExist(context){
   const id = context.params.queryId;
   console.log(id);
   // // 不起作用 Resources.find()一直返回空

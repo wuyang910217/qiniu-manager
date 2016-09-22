@@ -15,17 +15,20 @@ Template.imageloader.helpers({
   error() {
     const instance = Template.instance();
     const error = instance.error.get('error');
-    return error;
+    if (!isEmpty(error)) {
+      $('.err').show();
+      $('.err').fadeOut(5000);
+      return error;
+    }
   },
   success() {
     const instance = Template.instance();
     const success = instance.success.get('success');
-    return success;
-  },
-  hasError() {
-    const instance = Template.instance();
-    const error = instance.error.get('error');
-    return !isEmpty(error);
+    if (!isEmpty(success)) {
+      $('.success').show();
+      $('.success').fadeOut(3000);
+      return success;
+    }
   },
 });
 

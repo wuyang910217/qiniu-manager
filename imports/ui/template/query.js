@@ -17,13 +17,17 @@ Template.query.helpers({
   error() {
     const instance = Template.instance();
     const error = instance.error.get('error');
-    return error;
+    if (!isEmpty(error)) {
+      $('.err').show();
+      $('.err').fadeOut(5000);
+      return error;
+    }
   },
-  hasError() {
-    const instance = Template.instance();
-    const error = instance.error.get('error');
-    return !isEmpty(error);
-  },
+  // hasError() {
+  //   const instance = Template.instance();
+  //   const error = instance.error.get('error');
+  //   return !isEmpty(error);
+  // },
 });
 
 Template.query.events({

@@ -2,11 +2,11 @@
   <div class="detail-wrapper">
     <div class="container">
       {{#if Template.subscriptionsReady }}
-        {{#if hasError}}
+        <!-- {{#if hasError}} -->
           <h3 class="err">操作失败：{{error.error}} 错误码：{{error.code}}</h3>
-        {{else}}
+        <!-- {{else}} -->
           <h3 class="success">{{success}}</h3>
-        {{/if}}
+        <!-- {{/if}} -->
       <div class="btn-wrapper">
         <!-- let包装很重要 -->
         {{#let content =detail.contents }}

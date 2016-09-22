@@ -23,7 +23,11 @@ Template.detail.helpers({
   error() {
     const instance = Template.instance();
     const error = instance.error.get('error');
-    return error;
+    if (!isEmpty(error)) {
+      $('.err').show();
+      $('.err').fadeOut(5000);
+      return error;
+    }
     // let error = Errors.findOne({}) || {};
     // console.log(error);
     // if (!isEmpty(error)) {
@@ -33,14 +37,17 @@ Template.detail.helpers({
   success(){
     const instance = Template.instance();
     const success = instance.success.get('success');
-    return success;
+    if (!isEmpty(success)) {
+      $('.success').show();
+      $('.success').fadeOut(3000);
+      return success;
+    }
   },
-  hasError() {
-    const instance = Template.instance();
-    const error = instance.error.get('error');
-    return !isEmpty(error);
-    // return Errors.find({}).count() !== 0;
-  },
+  // hasError() {
+  //   const instance = Template.instance();
+  //   const error = instance.error.get('error');
+  //   return !isEmpty(error);
+  // },
   detail() {
     // 每次运行detail helper 都会执行一次
     const id = FlowRouter.getParam('queryId');
@@ -86,7 +93,10 @@ Template.detail.helpers({
 Template.detail.events({
   'click #remove' (event, instance) {
     event.preventDefault();
-    alert('你确定要删除此文件吗？');
+    const isCon = confirm('你确定要删除此文件吗？');
+    if (!isCon) {
+      return;
+    }
     const id = FlowRouter.getParam('queryId');
     const bucket = instance.content.get('content-detail').bucket;
     const key = instance.content.get('content-detail').contents.key;

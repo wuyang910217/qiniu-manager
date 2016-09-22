@@ -1,10 +1,7 @@
 <template name='imageloader'>
   <div class="upload-wrapper">
-    {{#if hasError}}
-      <h3 class="err">操作失败：{{error.error}}，错误码：{{error.code}}</h3>
-    {{else}}
-      <h3 class="success">{{success}}</h3>
-    {{/if}}
+    <h3 class="err">操作失败：{{error.error}}，错误码：{{error.code}}</h3>
+    <h3 class="success">{{success}}</h3>
     <p>一个用户可以有多个存储空间，但仅限本用户，与查询不同，查询可以根据提供的ak和sk查询其他用户的存储内容。</p>
     <div class="form-group">
       <label for="file">要上传的文件</label>
