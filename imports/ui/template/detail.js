@@ -8,33 +8,32 @@ import { isEmpty } from 'lodash/lang';
 import { startsWith } from 'lodash/string';
 import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 import { Resources } from '../../api/resources.js';
-import { Errors } from '../../api/errors.js';
 import './detail.html';
 
 Template.detail.onCreated(function() {
   let self = this;
-  this.content = new ReactiveDict();
-  // self.autorun(function(){
+  self.content = new ReactiveDict();
+  self.error = new ReactiveDict();
   let queryId = FlowRouter.getParam('queryId');
   self.subscribe('detail', queryId);
-  self.subscribe('error');
-  Meteor.call('errors.clearAll');
-  // });
 });
 
-Template.detail.onRendered(function(){
-
-});
 Template.detail.helpers({
-  error(){
-    let error = Errors.findOne({}) || {};
-    console.log(error);
-    if (!isEmpty(error)) {
-      return error;
-    }
+  error() {
+    let instance = Template.instance();
+    let error = instance.error.get('error');
+    return error;
+    // let error = Errors.findOne({}) || {};
+    // console.log(error);
+    // if (!isEmpty(error)) {
+    //   return error;
+    // }
   },
-  hasError(){
-    return Errors.find({}).count() !== 0;
+  hasError() {
+    let instance = Template.instance();
+    let error = instance.error.get('error');
+    return !isEmpty(error);
+    // return Errors.find({}).count() !== 0;
   },
   detail() {
     // 每次运行detail helper 都会执行一次
@@ -45,18 +44,18 @@ Template.detail.helpers({
       // 作用于layout内部
       // BlazeLayout.render('notFound');
       console.log('empty++++');
-      BlazeLayout.render('mainLayout', {main: 'dataNotFound'});
+      BlazeLayout.render('mainLayout', { main: 'dataNotFound' });
       // 用下面的方法需要定义/404路由，且当前路由变成/404,
       // 而不是localhost:3000/detail/2JM2p8Ngdddddddddddddd
       // FlowRouter.go('/404');
-    } else{
+    } else {
       let instance = Template.instance();
       instance.content.set('content-detail', detailContent);
       console.log(instance.content.get('content-detail'));
 
       console.log('每次运行detail helper 都会执行一次');
       console.log('用{{#let}} {{/let}}包装后，只会执行一次');
-      console.log(detailContent,detailContent.contents.mimeType);
+      console.log(detailContent, detailContent.contents.mimeType);
       return detailContent;
     }
   },
@@ -86,10 +85,11 @@ Template.detail.events({
     let bucket = instance.content.get('content-detail').bucket;
     let key = instance.content.get('content-detail').contents.key;
 
-    Meteor.call('errors.clearAll');
     Meteor.call('resources.remove', id, bucket, key, function(err) {
       if (err) {
-        console.log('resources.remove---->' + err);
+        console.log('resources.remove---->');
+        console.log(err.reason);
+        instance.error.set('error', err.reason);
       } else {
         console.log('resources.remove success');
         FlowRouter.go('/main');
@@ -105,8 +105,10 @@ Template.detail.events({
 
     Meteor.call('resources.download', bucket, key, hostname, function(err, ret) {
       if (err) {
-        console.log('resources.download---->' + err);
-      } else{
+        console.log('resources.download---->');
+        console.log(err.reason);
+        instance.error.set('error', err.reason);
+      } else {
         console.log('resources.download success');
         console.log(ret);
         window.open(ret);
@@ -137,9 +139,12 @@ Template.detail.events({
     } else {
       Meteor.call('resources.move', id, bucket, key, newBucket, newKey, newhostname, function(err) {
         if (err) {
-          console.log('resources.move---->' + err);
+          console.log('resources.move---->error');
+          console.log(err.reason);
+          instance.error.set('error', err.reason);
+        } else {
+          console.log('resources.move success');
         }
-        console.log('resources.move success');
       });
     }
   },
@@ -167,12 +172,13 @@ Template.detail.events({
     } else {
       Meteor.call('resources.copy', bucket, key, newBucket, newKey, newhostname, function(err) {
         if (err) {
-          console.log('resources.copy---->' + err);
+          console.log('resources.copy---->error');
+          console.log(err.reason);
+          instance.error.set('error', err.reason);
+        } else {
+          console.log('resources.copy success');
         }
-        console.log('resources.copy success');
       });
     }
   }
 });
-
-

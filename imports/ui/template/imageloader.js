@@ -4,26 +4,25 @@ import { ReactiveDict } from 'meteor/reactive-dict';
 import { $ } from 'meteor/jquery';
 import { isEmpty } from 'lodash/lang';
 import { BUCKET, HOST_NAME } from '../../api/conf.js';
-import { Errors } from '../../api/errors.js';
 import './imageloader.html';
 
 Template.imageloader.onCreated(function(){
-  this.subscribe('error');
-  Meteor.call('errors.clearAll');
+  this.error = new ReactiveDict();
 });
 
 Template.imageloader.helpers({
-  error(){
-    let error = Errors.findOne({}) || {};
-    console.log(error);
-    if (!isEmpty(error)) {
-      return error;
-    }
+  error() {
+    let instance = Template.instance();
+    let error = instance.error.get('error');
+    return error;
   },
-  hasError(){
-    return Errors.find({}).count() !== 0;
+  hasError() {
+    let instance = Template.instance();
+    let error = instance.error.get('error');
+    return !isEmpty(error);
   },
-})
+});
+
 Template.imageloader.events({
   'click #upload' (event, instance) {
     event.preventDefault();
@@ -50,8 +49,6 @@ Template.imageloader.events({
     }
     console.log(bucket, hostname, fileName);
 
-    Meteor.call('errors.clearAll');
-
     let reader = new FileReader();
     reader.onload = function() {
 
@@ -62,7 +59,9 @@ Template.imageloader.events({
 
       Meteor.call('resources.upload', bucket, fileName, hostname, buffer, function(err) {
         if (err) {
-          console.log('resources.upload---error' + err);
+          console.log('resources.upload---error');
+          console.log(err.reason);
+          instance.error.set('error'.error.reason);
         } else {
           console.log('resources.upload-----success');
         }

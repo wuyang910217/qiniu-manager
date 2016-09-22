@@ -1,7 +1,10 @@
 <template name='home'>
   <div class="home-wrapper">
     <div class="container">
-      <p>简单的错误提示，删除/查询无论失败或成功，都会跳转到main页面；</p>
+      {{#if hasError }}
+        <h3 class="err">操作失败：{{error.error}} 错误码：{{error.code}}</h3>
+      {{/if}}
+      <p>简单的错误提示，有时会有‘操作失败：[object]’错误提示，没有处理；</p>
       <p>每次查询，都会清空数据库；最多显示100条内容</p>
       <p>七牛可以有多个内容储存空间，显示默认配置的储存空间中的内容；</p>
       <p>内容存储空间与域名之间一一对应，否则不能正确显示；</p>

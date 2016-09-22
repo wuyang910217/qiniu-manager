@@ -12,7 +12,7 @@ Meteor.publish('detail',function(id){
   return Resources.find({_id: id},{fields: {bucket: 1, hostname: 1, contents: 1}});
 });
 
-Meteor.publish('error',function(){
-  return Errors.find({});
-});
+// Meteor.publish('error',function(){
+//   return Errors.find({});
+// });
 
