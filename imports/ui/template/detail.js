@@ -11,17 +11,18 @@ import { Resources } from '../../api/resources.js';
 import './detail.html';
 
 Template.detail.onCreated(function() {
-  let self = this;
+  const self = this;
   self.content = new ReactiveDict();
   self.error = new ReactiveDict();
-  let queryId = FlowRouter.getParam('queryId');
+  self.success = new ReactiveDict();
+  const queryId = FlowRouter.getParam('queryId');
   self.subscribe('detail', queryId);
 });
 
 Template.detail.helpers({
   error() {
-    let instance = Template.instance();
-    let error = instance.error.get('error');
+    const instance = Template.instance();
+    const error = instance.error.get('error');
     return error;
     // let error = Errors.findOne({}) || {};
     // console.log(error);
@@ -29,16 +30,21 @@ Template.detail.helpers({
     //   return error;
     // }
   },
+  success(){
+    const instance = Template.instance();
+    const success = instance.success.get('success');
+    return success;
+  },
   hasError() {
-    let instance = Template.instance();
-    let error = instance.error.get('error');
+    const instance = Template.instance();
+    const error = instance.error.get('error');
     return !isEmpty(error);
     // return Errors.find({}).count() !== 0;
   },
   detail() {
     // 每次运行detail helper 都会执行一次
-    let id = FlowRouter.getParam('queryId');
-    let detailContent = Resources.findOne({ _id: id }) || {};
+    const id = FlowRouter.getParam('queryId');
+    const detailContent = Resources.findOne({ _id: id }) || {};
     if (isEmpty(detailContent)) {
       // render notFound 页面会闪过layout布局的内容，需要重新定义一个dataNotFound，
       // 作用于layout内部
@@ -49,7 +55,7 @@ Template.detail.helpers({
       // 而不是localhost:3000/detail/2JM2p8Ngdddddddddddddd
       // FlowRouter.go('/404');
     } else {
-      let instance = Template.instance();
+      const instance = Template.instance();
       instance.content.set('content-detail', detailContent);
       console.log(instance.content.get('content-detail'));
 
@@ -61,16 +67,16 @@ Template.detail.helpers({
   },
   size(size) {
     if (size >= 1024 * 1024) {
-      return size / 1024 / 1024 + 'mb';
-    } else {
-      let num = size / 1024;
-      return num.toFixed(2) + 'kb';
+      const num = size / 1024 / 1024;
+      return `${num.toFixed(2)}Mb`;
     }
+    const num = size / 1024;
+    return `${num.toFixed(2)}kb`;
   },
   date(time) {
-    let string = time + '';
-    let unix = string.slice(0, 10);
-    return moment.unix(unix).format("YYYY年MM月DD日");
+    const string = `${time} `;
+    const unix = string.slice(0, 10);
+    return moment.unix(unix).format('YYYY年MM月DD日');
   },
   isImage(type) {
     return startsWith(type, 'image/');
@@ -81,11 +87,11 @@ Template.detail.events({
   'click #remove' (event, instance) {
     event.preventDefault();
     alert('你确定要删除此文件吗？');
-    let id = FlowRouter.getParam('queryId');
-    let bucket = instance.content.get('content-detail').bucket;
-    let key = instance.content.get('content-detail').contents.key;
+    const id = FlowRouter.getParam('queryId');
+    const bucket = instance.content.get('content-detail').bucket;
+    const key = instance.content.get('content-detail').contents.key;
 
-    Meteor.call('resources.remove', id, bucket, key, function(err) {
+    Meteor.call('resources.remove', id, bucket, key, (err) => {
       if (err) {
         console.log('resources.remove---->');
         console.log(err.reason);
@@ -99,11 +105,11 @@ Template.detail.events({
   'click #download' (event, instance) {
     event.preventDefault();
 
-    let bucket = instance.content.get('content-detail').bucket;
-    let key = instance.content.get('content-detail').contents.key;
-    let hostname = instance.content.get('content-detail').hostname;
+    const bucket = instance.content.get('content-detail').bucket;
+    const key = instance.content.get('content-detail').contents.key;
+    const hostname = instance.content.get('content-detail').hostname;
 
-    Meteor.call('resources.download', bucket, key, hostname, function(err, ret) {
+    Meteor.call('resources.download', bucket, key, hostname, (err, ret) => {
       if (err) {
         console.log('resources.download---->');
         console.log(err.reason);
@@ -118,31 +124,31 @@ Template.detail.events({
   'click #move' (event, instance) {
     event.preventDefault();
 
-    Meteor.call('errors.clearAll');
     let newBucket = $('input[name=bucket]').val().trim();
     let newhostname = $('input[name=hostname]').val().trim();
-    let newKey = $('input[name=key]').val().trim();
+    const newKey = $('input[name=key]').val().trim();
 
-    let bucket = instance.content.get('content-detail').bucket;
-    let hostname = instance.content.get('content-detail').hostname;
-    let key = instance.content.get('content-detail').contents.key;
-    let id = FlowRouter.getParam('queryId');
+    const bucket = instance.content.get('content-detail').bucket;
+    const hostname = instance.content.get('content-detail').hostname;
+    const key = instance.content.get('content-detail').contents.key;
+    const id = FlowRouter.getParam('queryId');
 
-    if (newBucket == '') {
+    if (isEmpty(newBucket)) {
       newBucket = bucket;
     }
-    if (newhostname == '') {
+    if (isEmpty(newhostname)) {
       newhostname = hostname;
     }
-    if (newKey == '') {
+    if (isEmpty(newKey)) {
       alert('必须有新的文件名！');
     } else {
-      Meteor.call('resources.move', id, bucket, key, newBucket, newKey, newhostname, function(err) {
+      Meteor.call('resources.move', id, bucket, key, newBucket, newKey, newhostname, (err) => {
         if (err) {
           console.log('resources.move---->error');
           console.log(err.reason);
           instance.error.set('error', err.reason);
         } else {
+          instance.success.set('success','操作成功');
           console.log('resources.move success');
         }
       });
@@ -151,31 +157,31 @@ Template.detail.events({
   'click #copy' (event, instance) {
     event.preventDefault();
 
-    Meteor.call('errors.clearAll');
     let newBucket = $('input[name=bucket-copy]').val().trim();
     let newhostname = $('input[name=hostname1]').val().trim();
-    let newKey = $('input[name=key-copy]').val().trim();
+    const newKey = $('input[name=key-copy]').val().trim();
 
-    let bucket = instance.content.get('content-detail').bucket;
-    let hostname = instance.content.get('content-detail').hostname;
-    let key = instance.content.get('content-detail').contents.key;
+    const bucket = instance.content.get('content-detail').bucket;
+    const hostname = instance.content.get('content-detail').hostname;
+    const key = instance.content.get('content-detail').contents.key;
     // let id =FlowRouter.getParam('queryId');
 
-    if (newBucket == '') {
+    if (isEmpty(newBucket)) {
       newBucket = bucket;
     }
-    if (newhostname == '') {
+    if (isEmpty(newhostname)) {
       newhostname = hostname;
     }
-    if (newKey == '') {
+    if (isEmpty(newKey)) {
       alert('必须有新的文件名！');
     } else {
-      Meteor.call('resources.copy', bucket, key, newBucket, newKey, newhostname, function(err) {
+      Meteor.call('resources.copy', bucket, key, newBucket, newKey, newhostname, (err) => {
         if (err) {
           console.log('resources.copy---->error');
           console.log(err.reason);
           instance.error.set('error', err.reason);
         } else {
+          instance.success.set('success','操作成功');
           console.log('resources.copy success');
         }
       });

@@ -14,13 +14,13 @@ Template.home.onCreated(function() {
 
 Template.home.helpers({
   error() {
-    let instance = Template.instance();
-    let error = instance.error.get('error');
+    const instance = Template.instance();
+    const error = instance.error.get('error');
     return error;
   },
   hasError() {
-    let instance = Template.instance();
-    let error = instance.error.get('error');
+    const instance = Template.instance();
+    const error = instance.error.get('error');
     return !isEmpty(error);
   },
 });
@@ -29,15 +29,15 @@ Template.home.events({
   'click #query-d' (event, instance) {
     event.preventDefault();
 
-    Meteor.call('resources.clearAll', function(error) {
-      if (error) {
-        console.log('清空数据库失败' + error);
-        instance.error.set('error'.error.reason);
+    Meteor.call('resources.clearAll', (err) => {
+      if (err) {
+        console.log(`清空数据库失败 ${err}`);
+        instance.error.set('error',err.reason);
       }
       console.log('清空数据库成功');
     });
 
-    Meteor.call('resources.add', BUCKET, ACCESS_KEY, SECRET_KEY, HOST_NAME, null, function(err) {
+    Meteor.call('resources.add', BUCKET, ACCESS_KEY, SECRET_KEY, HOST_NAME, null, (err) => {
       if (err) {
         console.log('resources.add---------error');
         console.log(err.reason);

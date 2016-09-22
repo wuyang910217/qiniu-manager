@@ -44,13 +44,6 @@
 .query-wrapper {
   width: 60%;
   margin: 0 auto;
-  .err {
-    text-align: center;
-    height: 50px;
-    margin: 10px;
-    line-height: 50px;
-    color: red;
-  }
   .form-group {
     margin: 20px;
     font-size: 18px;
@@ -85,13 +78,6 @@
 .upload-wrapper {
   width: 60%;
   margin: 0 auto;
-  .err {
-    text-align: center;
-    height: 50px;
-    margin: 10px;
-    line-height: 50px;
-    color: red;
-  }
   .form-group {
     padding: 10px;
     font-size: 18px;
@@ -105,17 +91,9 @@
 
 // detail page
 .detail-wrapper {
-  .err {
-    text-align: center;
-    height: 50px;
-    margin-top: -10px;
-    margin-bottom: -10px;
-    line-height: 50px;
-    color: red;
-  }
-  .btn-wrapper{
+  .btn-wrapper {
     float: left;
-    width:45%;
+    width: 45%;
     margin-top: 50px;
     font-size: 18px;
     img {
@@ -161,7 +139,7 @@
   }
 }
 
-.dataNotFoundWrapper{
+.dataNotFoundWrapper {
   width: 100%;
   margin: 0 auto;
   text-align: center;
@@ -172,4 +150,21 @@
   a {
     padding: 10px 20px;
   }
+}
+
+// error and success
+.success {
+  text-align: center;
+  margin: 10px;
+  color: #512DA8;
+  height: 50px;
+  line-height: 50px;
+}
+
+.err {
+  text-align: center;
+  height: 50px;
+  margin: 10px;
+  line-height: 50px;
+  color: #D32F2F;
 }

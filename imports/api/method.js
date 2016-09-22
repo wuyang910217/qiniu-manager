@@ -3,7 +3,7 @@ import { check } from 'meteor/check';
 import { Async } from 'meteor/meteorhacks:async';
 
 import { Resources } from './resources.js';
-import { BUCKET, ACCESS_KEY, SECRET_KEY, PIC_STYLE, HOST_NAME } from './conf.js';
+import { ACCESS_KEY, SECRET_KEY, PIC_STYLE} from './conf.js';
 
 import qiniu from 'qiniu';
 // var qiniu = require('qiniu');
@@ -12,9 +12,9 @@ qiniu.conf.ACCESS_KEY = ACCESS_KEY;
 qiniu.conf.SECRET_KEY = SECRET_KEY;
 
 const client = new qiniu.rs.Client();
-let wrapQiniuUpload = Async.wrap(qiniu.io, 'put');
-let wrapQiniuList = Async.wrap(qiniu.rsf, ['listPrefix']);
-let wrapQiniuClient = Async.wrap(client, ['remove', 'stat', 'move', 'copy']);
+const wrapQiniuUpload = Async.wrap(qiniu.io, ['put']);
+const wrapQiniuList = Async.wrap(qiniu.rsf, ['listPrefix']);
+const wrapQiniuClient = Async.wrap(client, [ 'remove', 'stat', 'move', 'copy' ]);
 
 // 1.一开始用Async.wrap()没有成功，错误信息没法传到客户端；
 // 2.后来新建了错误的数据库，在服务器段插入错误信息，并发布到客户端，然后处理；
@@ -27,13 +27,20 @@ Meteor.methods({
     Resources.remove({});
   },
   'resources.download' (bucket, key, hostname) {
+    check(bucket,String);
+    check(key,String);
+    check(hostname,String);
+
     const policy = new qiniu.rs.GetPolicy();
-    let url = hostname + '/' + key;
-    let downloadUrl = policy.makeRequest(url);
+    const url = `${hostname}/${key}`;
+    const downloadUrl = policy.makeRequest(url);
     console.log(downloadUrl);
     return downloadUrl;
   },
   'resources.remove' (id, bucket, key) {
+    check(id,String);
+    check(bucket,String);
+    check(key,String);
     //用try--catch 可以返回错误到客户端
     try {
       wrapQiniuClient.remove(bucket, key);
@@ -47,12 +54,17 @@ Meteor.methods({
     }
   },
   'resources.upload' (bucket, key, hostname, buffer) {
-    let putPolicy = new qiniu.rs.PutPolicy(bucket + ":" + key);
+    check(bucket,String);
+    check(key,String);
+    check(hostname,String);
+    check(buffer,String);
+
+    const putPolicy = new qiniu.rs.PutPolicy(`${bucket}:${key}`);
     const token = putPolicy.token();
 
     const extra = new qiniu.io.PutExtra();
 
-    buffer = new Buffer(buffer.replace(/^data:image\/\w+;base64,/, ""), 'base64');
+    buffer = new Buffer(buffer.replace(/^data:image\/\w+;base64,/, ''), 'base64');
     // buffer = new Buffer(buffer,'base64');
     // console.log(buffer.toString());
     // console.log(buffer);
@@ -61,20 +73,20 @@ Meteor.methods({
       console.log('Meteor method resources.upload success');
       try {
         const ret = wrapQiniuClient.stat(bucket, key);
-        const url = hostname + '/' + key + '?' + PIC_STYLE;
+        const url = `${hostname}/${key}?${PIC_STYLE}`;
         const data = {
-          bucket: bucket,
-          assess_key: ACCESS_KEY,
-          secret_key: SECRET_KEY,
-          hostname: hostname,
+          bucket,
+          assessKey: ACCESS_KEY,
+          secretKey: SECRET_KEY,
+          hostname,
           createdAt: new Date(),
           contents: {
-            key: key,
+            key,
             hash: ret.hash,
             fsize: ret.fsize,
             mimeType: ret.mimeType,
             putTime: ret.putTime,
-            url: url
+            url
           }
         };
         Resources.insert(data);
@@ -90,18 +102,23 @@ Meteor.methods({
     }
   },
   'resources.add' (bucket, ak, sk, hostname, prefix) {
+    check(bucket,String);
+    check(ak,String);
+    check(sk,String);
+    check(hostname,String);
+
     qiniu.conf.ACCESS_KEY = ak;
     qiniu.conf.SECRET_KEY = sk;
     try {
       const ret = wrapQiniuList.listPrefix(bucket, prefix, null, null, null);
       console.log('Meteor method resources.add success');
-      for (var i = ret.items.length - 1; i >= 0; i--) {
-        const url = hostname + '/' + ret.items[i].key + '?' + PIC_STYLE;
+      for (let i = ret.items.length - 1; i >= 0; i--) {
+        const url = `${hostname}/${ret.items[i].key}?${PIC_STYLE}`;
         const data = {
-          bucket: bucket,
-          assess_key: ak,
-          secret_key: sk,
-          hostname: hostname,
+          bucket,
+          assessKey: ak,
+          secretKey: sk,
+          hostname,
           createdAt: new Date(),
           contents: {
             key: ret.items[i].key,
@@ -109,7 +126,7 @@ Meteor.methods({
             fsize: ret.items[i].fsize,
             mimeType: ret.items[i].mimeType,
             putTime: ret.items[i].putTime,
-            url: url
+            url
           }
         };
         Resources.insert(data);
@@ -121,11 +138,18 @@ Meteor.methods({
     }
   },
   'resources.move' (id, bucket, key, dstbucket, deskey, hostname) {
+    check(id,String);
+    check(bucket,String);
+    check(key,String);
+    check(dstbucket,String);
+    check(deskey,String);
+    check(hostname,String);
+
     try {
       wrapQiniuClient.move(bucket, key, dstbucket, deskey);
       console.log('Meteor method resources.move success');
       Resources.update(id, {
-        $set: { 'bucket': dstbucket, 'hostname': hostname, 'contents.key': deskey }
+        $set: { 'bucket': dstbucket, hostname, 'contents.key': deskey }
       });
     } catch (err) {
       console.log('Meteor method resources.move---->error');
@@ -147,17 +171,23 @@ Meteor.methods({
     // }));
   },
   'resources.copy' (bucket, key, dstbucket, deskey, hostname) {
+    check(bucket,String);
+    check(key,String);
+    check(dstbucket,String);
+    check(deskey,String);
+    check(hostname,String);
+
     try {
       wrapQiniuClient.copy(bucket, key, dstbucket, deskey);
       console.log('Meteor method resources.copy success');
       try {
         const ret = wrapQiniuClient.stat(dstbucket, deskey);
-        const url = hostname + '/' + deskey + '?' + PIC_STYLE;
+        const url = `${hostname}/${deskey}?${PIC_STYLE}`;
         const data = {
           bucket: dstbucket,
-          assess_key: ACCESS_KEY,
-          secret_key: SECRET_KEY,
-          hostname: hostname,
+          assessKey: ACCESS_KEY,
+          secretKey: SECRET_KEY,
+          hostname,
           createdAt: new Date(),
           contents: {
             key: deskey,
@@ -165,7 +195,7 @@ Meteor.methods({
             fsize: ret.fsize,
             mimeType: ret.mimeType,
             putTime: ret.putTime,
-            url: url
+            url
           }
         };
         Resources.insert(data);

@@ -15,13 +15,13 @@ Template.query.onCreated(function() {
 
 Template.query.helpers({
   error() {
-    let instance = Template.instance();
-    let error = instance.error.get('error');
+    const instance = Template.instance();
+    const error = instance.error.get('error');
     return error;
   },
   hasError() {
-    let instance = Template.instance();
-    let error = instance.error.get('error');
+    const instance = Template.instance();
+    const error = instance.error.get('error');
     return !isEmpty(error);
   },
 });
@@ -34,32 +34,32 @@ Template.query.events({
     let ak = $('input[name=ak]').val();
     let sk = $('input[name=sk]').val();
     let hostname = $('input[name=hostname]').val();
-    let prefix = $('input[name=prefix]').val();
+    const prefix = $('input[name=prefix]').val();
     console.log(bucket, ak, sk, hostname, prefix);
 
-    if (bucket === '') {
+    if (isEmpty(bucket)) {
       bucket = BUCKET;
     }
-    if (ak === '') {
+    if (isEmpty(ak)) {
       ak = ACCESS_KEY;
     }
-    if (sk === '') {
+    if (isEmpty(sk)) {
       sk = SECRET_KEY;
     }
-    if (hostname === '') {
+    if (isEmpty(hostname)) {
       hostname = HOST_NAME;
     }
     console.log(bucket, ak, sk, hostname);
 
-    Meteor.call('resources.clearAll', function(error) {
-      if (error) {
-        console.log('清空数据库失败' + error);
-        instance.error.set('error'.error.reason);
+    Meteor.call('resources.clearAll', (err) => {
+      if (err) {
+        console.log(`清空数据库失败 ${err}`);
+        instance.error.set('error'.err.reason);
       }
       console.log('清空数据库成功');
     });
 
-    Meteor.call('resources.add', bucket, ak, sk, hostname, prefix, function(err) {
+    Meteor.call('resources.add', bucket, ak, sk, hostname, prefix, (err) => {
       if (err) {
         console.log('resources.add---------error');
         console.log(err.reason);

@@ -8,17 +8,23 @@ import './imageloader.html';
 
 Template.imageloader.onCreated(function(){
   this.error = new ReactiveDict();
+  this.success = new ReactiveDict();
 });
 
 Template.imageloader.helpers({
   error() {
-    let instance = Template.instance();
-    let error = instance.error.get('error');
+    const instance = Template.instance();
+    const error = instance.error.get('error');
     return error;
   },
+  success() {
+    const instance = Template.instance();
+    const success = instance.success.get('success');
+    return success;
+  },
   hasError() {
-    let instance = Template.instance();
-    let error = instance.error.get('error');
+    const instance = Template.instance();
+    const error = instance.error.get('error');
     return !isEmpty(error);
   },
 });
@@ -27,42 +33,43 @@ Template.imageloader.events({
   'click #upload' (event, instance) {
     event.preventDefault();
 
-    let ofile = $('input[name=file]')[0].files;
-    let file = $('input[name=file]')[0].files[0];
+    const ofile = $('input[name=file]')[0].files;
+    const file = $('input[name=file]')[0].files[0];
     let fileName = $('input[name=file]')[0].files[0].name;
     let bucket = $('input[name=bucket]').val();
     let hostname = $('input[name=hostname]').val();
-    let path = $('input[name=path]').val();
+    const path = $('input[name=path]').val();
 
     if (ofile.length === 0) {
       alert('请选择文件');
     }
     // bucket and hostname 有对应关系，此处没有检查
-    if (bucket == '') {
+    if (isEmpty(bucket)) {
       bucket = BUCKET;
     }
-    if (hostname == '') {
+    if (isEmpty(hostname)) {
       hostname = HOST_NAME;
     }
-    if (path != '') {
-      fileName = path + '/' + fileName;
+    if (!isEmpty(path)) {
+      fileName = `${path}'/'${fileName}`;
     }
     console.log(bucket, hostname, fileName);
 
-    let reader = new FileReader();
+    const reader = new FileReader();
     reader.onload = function() {
 
-      let buffer = reader.result;
+      const buffer = reader.result;
       // console.log(buffer);
       // let buffer2string = new Buffer(buffer).toString('base64');
       // console.log(buffer2string);
 
-      Meteor.call('resources.upload', bucket, fileName, hostname, buffer, function(err) {
+      Meteor.call('resources.upload', bucket, fileName, hostname, buffer, (err) => {
         if (err) {
           console.log('resources.upload---error');
           console.log(err.reason);
           instance.error.set('error'.error.reason);
         } else {
+          instance.success.set('success','操作成功');
           console.log('resources.upload-----success');
         }
       });
