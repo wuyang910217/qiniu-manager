@@ -34,6 +34,8 @@ Template.query.events({
   'click #query' (event, instance) {
     event.preventDefault();
 
+    instance.error.set('error', '');
+
     let bucket = $('input[name=bucket]').val();
     let ak = $('input[name=ak]').val();
     let sk = $('input[name=sk]').val();

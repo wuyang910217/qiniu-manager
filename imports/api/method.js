@@ -110,8 +110,11 @@ Meteor.methods({
     qiniu.conf.ACCESS_KEY = ak;
     qiniu.conf.SECRET_KEY = sk;
     try {
+      const startTime = new Date();
       const ret = wrapQiniuList.listPrefix(bucket, prefix, null, null, null);
+      console.log(`获取文件总共 ${ret.items.length}个`);
       console.log('Meteor method resources.add success');
+
       for (let i = ret.items.length - 1; i >= 0; i--) {
         const url = `${hostname}/${ret.items[i].key}?${PIC_STYLE}`;
         const data = {
@@ -131,6 +134,8 @@ Meteor.methods({
         };
         Resources.insert(data);
       }
+      const endTime = new Date();
+      console.log(`获取所有文件，并存到数据库 耗时： ${endTime-startTime}`);
     } catch (err) {
       console.log('Meteor method resources.add---->error');
       console.log(err);

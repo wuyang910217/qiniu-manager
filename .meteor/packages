@@ -27,5 +27,5 @@ meteorhacks:fast-render
 sacha:spin
 # juliancwirko:postcss
 twbs:bootstrap
-easy:search
+#easy:search
 meteorhacks:async

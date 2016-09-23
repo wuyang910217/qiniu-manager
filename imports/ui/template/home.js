@@ -29,6 +29,8 @@ Template.home.events({
   'click #query-d' (event, instance) {
     event.preventDefault();
 
+    instance.error.set('error', '');
+
     Meteor.call('resources.clearAll', (err) => {
       if (err) {
         console.log(`清空数据库失败 ${err}`);
@@ -37,6 +39,7 @@ Template.home.events({
       console.log('清空数据库成功');
     });
 
+    const startTime = new Date();
     Meteor.call('resources.add', BUCKET, ACCESS_KEY, SECRET_KEY, HOST_NAME, null, (err) => {
       if (err) {
         console.log('resources.add---------error');
@@ -44,6 +47,8 @@ Template.home.events({
         instance.error.set('error', err.reason);
       } else {
         console.log('获取全部内容成功');
+        const endTime = new Date();
+        console.log(`客户端获取全部内容，耗时： ${endTime-startTime}`);
         FlowRouter.go('/main');
       }
     });

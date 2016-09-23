@@ -93,6 +93,9 @@ Template.detail.helpers({
 Template.detail.events({
   'click #remove' (event, instance) {
     event.preventDefault();
+
+    instance.error.set('error', '');
+
     const isCon = confirm('你确定要删除此文件吗？');
     if (!isCon) {
       return;
@@ -115,6 +118,8 @@ Template.detail.events({
   'click #download' (event, instance) {
     event.preventDefault();
 
+    instance.error.set('error', '');
+
     const bucket = instance.content.get('content-detail').bucket;
     const key = instance.content.get('content-detail').contents.key;
     const hostname = instance.content.get('content-detail').hostname;
@@ -133,6 +138,10 @@ Template.detail.events({
   },
   'click #move' (event, instance) {
     event.preventDefault();
+
+    // 首先要清空，不然只会提示一次，以后都没反应
+    instance.error.set('error', '');
+    instance.success.set('success', '');
 
     let newBucket = $('input[name=bucket]').val().trim();
     let newhostname = $('input[name=hostname]').val().trim();
@@ -167,6 +176,9 @@ Template.detail.events({
   'click #copy' (event, instance) {
     event.preventDefault();
 
+    instance.error.set('error', '');
+    instance.success.set('success', '');
+
     let newBucket = $('input[name=bucket-copy]').val().trim();
     let newhostname = $('input[name=hostname1]').val().trim();
     const newKey = $('input[name=key-copy]').val().trim();
@@ -192,6 +204,7 @@ Template.detail.events({
           instance.error.set('error', err.reason);
         } else {
           instance.success.set('success','操作成功');
+          console.log(instance.success.get('success'));
           console.log('resources.copy success');
         }
       });

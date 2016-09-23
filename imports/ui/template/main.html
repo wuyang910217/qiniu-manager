@@ -1,9 +1,6 @@
 <template name='main'>
   <div class="main-wrapper">
     {{#if isReady 'mainpage' }}
-    <div class="panel">
-      <!-- {{> searchBox}} -->
-    </div>
     <div class="row">
       {{#each contents}} {{> content}} {{/each}}
     </div>

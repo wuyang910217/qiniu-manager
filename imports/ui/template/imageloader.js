@@ -36,6 +36,9 @@ Template.imageloader.events({
   'click #upload' (event, instance) {
     event.preventDefault();
 
+    instance.error.set('error', '');
+    instance.success.set('success', '');
+
     const ofile = $('input[name=file]')[0].files;
     const file = $('input[name=file]')[0].files[0];
     let fileName = $('input[name=file]')[0].files[0].name;
@@ -70,7 +73,7 @@ Template.imageloader.events({
         if (err) {
           console.log('resources.upload---error');
           console.log(err.reason);
-          instance.error.set('error'.error.reason);
+          instance.error.set('error',err.reason);
         } else {
           instance.success.set('success','操作成功');
           console.log('resources.upload-----success');
