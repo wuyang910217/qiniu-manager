@@ -1,6 +1,6 @@
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
-
+import { startsWith } from 'lodash/string';
 import { Resources } from '../../api/resources.js';
 import './main.html';
 
@@ -21,7 +21,7 @@ Template.main.helpers({
 
 Template.content.helpers({
   isImage(type) {
-    return type.indexOf('image/') > -1;
+    return startsWith(type, 'image/');
   },
   // 从这里得到id，并存到params里，其他地方都可以调用
   pathForDetail() {
