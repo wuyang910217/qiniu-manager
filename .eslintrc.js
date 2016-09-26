@@ -38,4 +38,3 @@ module.exports = {
         "no-unused-vars": [1]
     }
 };
-

@@ -3,6 +3,11 @@
     {{#if isReady 'mainpage' }}
     <div class="row">
       {{#each contents}} {{> content}} {{/each}}
+      {{#if hasCont}}
+        <button class="btn btn-primary more" id="more">显示更多</button>
+      {{else}}
+        <button class="btn btn-primary more">没有更多了</button>
+      {{/if}}
     </div>
     {{else}}
       {{> loading}}

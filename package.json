@@ -9,5 +9,10 @@
     "meteor-node-stubs": "~0.2.0",
     "moment": "^2.15.0",
     "qiniu": "^6.1.11"
+  },
+  "devDependencies": {
+    "eslint": "^3.6.0",
+    "eslint-config-airbnb-base": "^7.2.0",
+    "eslint-plugin-import": "^1.16.0"
   }
 }

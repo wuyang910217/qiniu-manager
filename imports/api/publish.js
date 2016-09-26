@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Resources } from './resources.js';
 
-Meteor.publish('contents',() => {
-  return Resources.find({},{fields: {contents: 1},limit: 50});
+Meteor.publish('contents',(limit=20,skip=0) => {
+  return Resources.find({},{fields: {contents: 1},limit,skip,sort: {createdAt: -1}});
 });
 
 Meteor.publish('detail',(id) => {

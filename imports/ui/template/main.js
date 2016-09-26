@@ -1,8 +1,15 @@
+import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
+import { ReactiveVar } from 'meteor/reactive-var';
 import { startsWith } from 'lodash/string';
 import { Resources } from '../../api/resources.js';
 import './main.html';
+
+Template.main.onCreated(function(){
+  this.count = new ReactiveVar(0);
+  this.skip = new ReactiveVar(0);
+});
 
 Template.main.helpers({
   isReady(sub) {
@@ -16,6 +23,12 @@ Template.main.helpers({
     console.log(Resources.find().fetch());
     // 嵌套的时间排序
     return Resources.find({}, { sort: { 'contents.putTime': -1 } });
+  },
+  hasCont() {
+    const count = Resources.find().count();
+    const skip = Template.instance().skip.get();
+    console.log(count,skip);
+    return count>=skip;
   }
 });
 
@@ -30,4 +43,16 @@ Template.content.helpers({
     };
     return FlowRouter.path('detail', params);
   }
+});
+
+Template.main.events({
+  'click #more'(event,instance) {
+    event.preventDefault();
+
+    instance.count.set(instance.count.get()+1);
+    const limit = 20;
+    const skip = instance.count.get()*limit;
+    instance.skip.set(skip);
+    Meteor.subscribe('contents', limit, skip);
+  },
 });
