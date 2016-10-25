@@ -2,7 +2,7 @@
   "name": "qiniu-manager",
   "private": true,
   "scripts": {
-    "start": "meteor run --settings settings.json"
+    "start": "meteor run --settings settings_default.json"
   },
   "dependencies": {
     "lodash": "^4.15.0",
